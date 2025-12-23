@@ -461,17 +461,29 @@
         }
 
         .error-indicator {
-            font-size: 1.5rem;
-            animation: shake 0.5s ease-in-out;
+            font-size: 2.5rem;
+            animation: pulse 1s ease-in-out infinite;
             position: absolute;
-            top: 8px;
-            left: 8px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8));
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
+        }
+
+        .hand-header.has-error {
+            background: linear-gradient(to bottom, #fee2e2 0%, #fecaca 100%) !important;
         }
 
         @keyframes bounce {
@@ -920,7 +932,7 @@
 
                 const bidLabel = document.createElement('div');
                 bidLabel.className = 'input-label';
-                bidLabel.textContent = 'Bid';
+                bidLabel.textContent = 'BID';
 
                 const bidControl = document.createElement('div');
                 bidControl.className = 'number-control';
@@ -967,6 +979,7 @@
                 bidControl.appendChild(bidDecBtn);
                 bidControl.appendChild(bidInput);
                 bidControl.appendChild(bidIncBtn);
+                
                 bidWrapper.appendChild(bidLabel);
                 bidWrapper.appendChild(bidControl);
 
@@ -976,7 +989,7 @@
 
                 const trickLabel = document.createElement('div');
                 trickLabel.className = 'input-label';
-                trickLabel.textContent = 'Won';
+                trickLabel.textContent = 'WON';
 
                 const trickControl = document.createElement('div');
                 trickControl.className = 'number-control';
@@ -1023,6 +1036,7 @@
                 trickControl.appendChild(trickDecBtn);
                 trickControl.appendChild(trickInput);
                 trickControl.appendChild(trickIncBtn);
+                
                 trickWrapper.appendChild(trickLabel);
                 trickWrapper.appendChild(trickControl);
 
@@ -1109,13 +1123,16 @@
 
         const happyIndicator = document.getElementById(`happy-${handNumber}`);
         const errorIndicator = document.getElementById(`error-${handNumber}`);
+        const handHeader = errorIndicator ? errorIndicator.closest('.hand-header') : null;
         
         // Check for error: total tricks won exceeds hand number
         if (errorIndicator) {
             if (allTricksEntered && totalTricks > handNumber) {
                 errorIndicator.style.display = 'block';
+                if (handHeader) handHeader.classList.add('has-error');
             } else {
                 errorIndicator.style.display = 'none';
+                if (handHeader) handHeader.classList.remove('has-error');
             }
         }
 
