@@ -12,104 +12,106 @@
         }
 
         :root {
-            --primary: #667eea;
-            --primary-dark: #5568d3;
-            --secondary: #764ba2;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #8b5cf6;
             --success: #10b981;
             --success-dark: #059669;
+            --success-light: #34d399;
             --danger: #ef4444;
             --danger-dark: #dc2626;
             --accent: #f59e0b;
             --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --card-bg: #ffffff;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --border: #e5e7eb;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --row-height: 140px;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --text-lighter: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --row-height: 130px;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: var(--bg-gradient);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
             color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: var(--shadow-xl);
-            overflow: hidden;
-            animation: fadeIn 0.5s ease-out;
+            min-height: 100vh;
+            animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .header {
             background: var(--bg-gradient);
-            padding: 30px;
+            padding: 40px 20px;
             text-align: center;
             color: white;
         }
 
         .header h1 {
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 800;
             margin: 0;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: -0.5px;
         }
 
         .header-subtitle {
-            font-size: 0.9rem;
-            opacity: 0.95;
+            font-size: 0.95rem;
+            opacity: 0.9;
             margin-top: 8px;
             font-style: italic;
+            font-weight: 300;
         }
 
         .content {
-            padding: 30px;
+            padding: 24px 20px;
         }
 
         /* Card Sections */
         .card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 24px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-light);
             box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-light);
         }
 
         .card-header h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.125rem;
+            font-weight: 700;
             color: var(--text-dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            letter-spacing: -0.3px;
         }
 
         .card-icon {
@@ -118,28 +120,29 @@
 
         /* Input Styles */
         input[type="text"] {
-            padding: 12px 16px;
+            padding: 14px 16px;
             border: 2px solid var(--border);
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             transition: all 0.2s ease;
             background: white;
             width: 100%;
             max-width: 300px;
+            font-weight: 500;
         }
 
         input[type="text"]:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
         /* Button Styles */
         button {
-            padding: 12px 24px;
+            padding: 14px 24px;
             cursor: pointer;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.2s ease;
@@ -147,10 +150,11 @@
             align-items: center;
             gap: 8px;
             box-shadow: var(--shadow-sm);
+            letter-spacing: -0.2px;
         }
 
         button:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             box-shadow: var(--shadow);
         }
 
@@ -186,16 +190,22 @@
         }
 
         .btn-quick {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
             margin: 6px;
             font-size: 0.95rem;
             animation: slideIn 0.3s ease-out;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-quick:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: scale(0.9); }
+            from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
 
@@ -216,21 +226,21 @@
         .saved-player-tag {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            border-radius: 20px;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--border-light);
+            border-radius: 10px;
             margin: 6px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-dark);
-            border: 2px solid var(--border);
+            border: 2px solid transparent;
             transition: all 0.2s ease;
             animation: slideIn 0.3s ease-out;
         }
 
         .saved-player-tag:hover {
             border-color: var(--danger);
-            background: #fee;
+            background: #fee2e2;
         }
 
         .btn-remove-tag {
@@ -238,8 +248,8 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -251,7 +261,7 @@
         }
 
         .btn-remove-tag:hover {
-            transform: scale(1.1) rotate(90deg);
+            transform: scale(1.15) rotate(90deg);
             box-shadow: var(--shadow-sm);
         }
 
@@ -265,21 +275,22 @@
         .empty-state {
             text-align: center;
             padding: 24px;
-            color: var(--text-light);
+            color: var(--text-lighter);
             font-style: italic;
         }
 
         #player-list {
             margin-top: 16px;
-            padding: 12px;
+            padding: 14px 16px;
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border-radius: 8px;
+            border-radius: 12px;
             color: var(--text-dark);
-            font-weight: 500;
-            min-height: 44px;
+            font-weight: 600;
+            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 2px solid #bae6fd;
         }
 
         .action-section {
@@ -287,140 +298,95 @@
             margin-top: 24px;
         }
 
-        /* Floating Scoreboard */
-        .floating-scoreboard {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: var(--shadow-xl);
-            z-index: 1000;
-            min-width: 200px;
-            max-width: 280px;
-            border: 3px solid;
-            border-image: var(--bg-gradient) 1;
-            animation: slideInRight 0.5s ease-out;
-        }
-
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .floating-scoreboard h3 {
-            margin: 0 0 12px 0;
-            font-size: 1rem;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .score-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            margin: 6px 0;
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .score-item.leader {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 2px solid var(--accent);
-            font-weight: 700;
-        }
-
-        .score-item.leader .player-name::before {
-            content: '';
-        }
-
-        .player-name {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-        }
-
-        .player-score {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .score-item.leader .player-score {
-            color: var(--accent);
-        }
-
-        .player-score.negative {
-            color: var(--danger);
-        }
-
         /* Horizontal Scrolling Score Table */
         .score-container {
             display: flex;
-            height: calc(100vh - 80px);
+            height: calc(100vh - 60px);
             min-height: 600px;
-            max-height: 900px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
+            max-height: 100vh;
             background: white;
+            overflow: hidden;
         }
 
         /* Fixed Left Column - Player Names */
         .players-column {
             flex-shrink: 0;
-            width: 150px;
-            background: var(--bg-gradient);
+            width: 160px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
             display: flex;
             flex-direction: column;
-            border-right: 3px solid var(--primary-dark);
+            border-right: 1px solid rgba(255,255,255,0.2);
+            box-shadow: var(--shadow);
         }
 
         .players-header {
-            height: 80px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.15);
             color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
+            font-weight: 800;
+            font-size: 0.875rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid rgba(255,255,255,0.3);
+            letter-spacing: 1.5px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
 
         .player-row {
             height: var(--row-height);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 12px;
             color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
             text-align: center;
+            gap: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .player-row:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .player-name-display {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
             word-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .player-total-display {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            letter-spacing: -1px;
+        }
+
+        .player-total-display.negative {
+            color: #fca5a5;
+        }
+
+        .player-total-display.positive {
+            color: #6ee7b7;
         }
 
         .total-row {
-            height: 80px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.15);
             color: white;
-            font-weight: 700;
-            font-size: 1.2rem;
-            border-top: 2px solid rgba(255,255,255,0.3);
+            font-weight: 800;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-top: 1px solid rgba(255,255,255,0.2);
         }
 
         /* Scrolling Score Columns */
@@ -430,6 +396,24 @@
             overflow-y: hidden;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
+            background: linear-gradient(to bottom, #f8fafc 0%, #ffffff 100%);
+        }
+
+        .scores-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scores-wrapper::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .scores-wrapper::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .scores-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
 
         .scores-container {
@@ -439,37 +423,46 @@
 
         .hand-column {
             flex-shrink: 0;
-            width: 250px;
+            width: 260px;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid var(--border);
+            border-right: 1px solid var(--border-light);
             scroll-snap-align: start;
             background: white;
+            transition: background 0.2s ease;
+        }
+
+        .hand-column:hover {
+            background: #fafbfc;
         }
 
         .hand-header {
-            height: 80px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             gap: 4px;
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            font-weight: 700;
-            font-size: 1.5rem;
+            background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
+            font-weight: 800;
+            font-size: 1.75rem;
             color: var(--primary);
-            border-bottom: 2px solid var(--border);
+            border-bottom: 2px solid var(--border-light);
             position: relative;
+            letter-spacing: -1px;
         }
 
         .happy-indicator {
-            font-size: 2rem;
-            animation: bounce 0.5s ease-in-out;
+            font-size: 1.5rem;
+            animation: bounce 0.6s ease-in-out;
+            position: absolute;
+            top: 8px;
+            right: 8px;
         }
 
         @keyframes bounce {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.3); }
         }
 
         .score-cell {
@@ -479,13 +472,19 @@
             align-items: center;
             justify-content: center;
             padding: 12px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--border-light);
             gap: 8px;
+            background: white;
+            transition: background 0.2s ease;
+        }
+
+        .score-cell:hover {
+            background: #fafbfc;
         }
 
         .score-inputs {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -493,50 +492,54 @@
         .input-with-buttons {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
         }
 
         .number-control {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         .increment-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             box-shadow: var(--shadow-sm);
+            border: none;
         }
 
         .increment-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.08);
+            box-shadow: var(--shadow);
         }
 
         .increment-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
         input[type="number"] {
-            width: 50px;
-            padding: 8px 4px;
+            width: 54px;
+            height: 36px;
+            padding: 0;
             text-align: center;
             border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1.125rem;
             font-weight: 700;
             transition: all 0.2s ease;
             -webkit-appearance: none;
             -moz-appearance: textfield;
+            background: white;
         }
 
         input[type="number"]::-webkit-inner-spin-button,
@@ -547,20 +550,21 @@
 
         input[type="number"]:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
         }
 
         .bid-input {
-            border-color: var(--primary) !important;
+            border-color: var(--primary-light) !important;
             color: var(--primary);
         }
 
         .bid-input:focus {
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
         }
 
         .trick-input {
-            border-color: var(--success) !important;
+            border-color: var(--success-light) !important;
             color: var(--success);
         }
 
@@ -569,54 +573,54 @@
         }
 
         .btn-bid {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            border: 2px solid var(--primary-dark);
         }
 
         .btn-trick {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
             color: white;
-            border: 2px solid var(--success-dark);
         }
 
         .input-label {
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             color: var(--text-light);
         }
 
         .round-score {
-            font-size: 1rem;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 8px;
-            min-width: 60px;
+            font-size: 1.125rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 10px;
+            min-width: 70px;
             text-align: center;
+            letter-spacing: -0.5px;
         }
 
         .score-pos {
             color: var(--success);
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(16, 185, 129, 0.12);
         }
 
         .score-neg {
             color: var(--danger);
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.12);
         }
 
         .total-cell {
-            height: 80px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            font-weight: 700;
+            background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
+            font-weight: 800;
             font-size: 1.5rem;
             color: var(--primary);
-            border-top: 2px solid var(--border);
+            border-top: 2px solid var(--border-light);
+            letter-spacing: -1px;
         }
 
         .hidden {
@@ -626,15 +630,15 @@
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 1.75rem;
+                font-size: 2rem;
             }
 
             .content {
-                padding: 20px;
+                padding: 16px;
             }
 
             .card {
-                padding: 16px;
+                padding: 20px;
             }
 
             input[type="text"] {
@@ -652,17 +656,25 @@
             }
 
             .players-column {
-                width: 120px;
+                width: 140px;
             }
 
             .hand-column {
-                width: 200px;
+                width: 240px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .players-column {
+                width: 120px;
             }
 
-            .floating-scoreboard {
-                position: static;
-                margin: 0 auto 20px;
-                max-width: 100%;
+            .player-name-display {
+                font-size: 0.9rem;
+            }
+
+            .player-total-display {
+                font-size: 1.75rem;
             }
         }
     </style>
@@ -719,11 +731,6 @@
         </div>
 
         <div id="game-section" class="hidden">
-            <div class="floating-scoreboard" id="floating-scoreboard">
-                <h3>🏆 Standings</h3>
-                <div id="score-rankings"></div>
-            </div>
-
             <div class="score-container">
                 <!-- Fixed Left Column - Player Names -->
                 <div class="players-column">
@@ -740,7 +747,7 @@
                 </div>
             </div>
 
-            <div class="action-section" style="margin-top: 20px;">
+            <div class="action-section" style="margin-top: 20px; padding: 0 20px 20px;">
                 <button class="btn-danger" onclick="location.reload()">
                     🔄 New Game
                 </button>
@@ -866,9 +873,12 @@
         const playerNamesColumn = document.getElementById('player-names-column');
         const scoresContainer = document.getElementById('scores-container');
 
-        // Render player names in fixed left column
+        // Render player names in fixed left column with scores
         playerNamesColumn.innerHTML = players.map((player, idx) => 
-            `<div class="player-row">${player.name}</div>`
+            `<div class="player-row">
+                <div class="player-name-display" id="player-name-${idx}">${player.name}</div>
+                <div class="player-total-display" id="player-total-sidebar-${idx}">0</div>
+            </div>`
         ).join('');
 
         // Create columns for each hand (1-15)
@@ -979,8 +989,6 @@
                 trickInput.min = '0';
                 trickInput.max = hand;
                 trickInput.value = '0';
-                trickInput.inputMode = 'none';rickInput.value = '0';
-                trickInput.inputMode = 'none';rickInput.value = '';
                 trickInput.inputMode = 'none';
 
                 const trickIncBtn = document.createElement('button');
@@ -1030,23 +1038,23 @@
         // Add final totals column
         const totalsColumn = document.createElement('div');
         totalsColumn.className = 'hand-column';
-        totalsColumn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        totalsColumn.style.background = 'linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%)';
 
         const totalsHeader = document.createElement('div');
         totalsHeader.className = 'hand-header';
-        totalsHeader.style.background = 'rgba(0,0,0,0.2)';
+        totalsHeader.style.background = 'rgba(0,0,0,0.15)';
         totalsHeader.style.color = 'white';
-        totalsHeader.textContent = 'TOTAL';
+        totalsHeader.textContent = 'FINAL';
         totalsColumn.appendChild(totalsHeader);
 
         players.forEach((player, pIndex) => {
             const totalCell = document.createElement('div');
             totalCell.className = 'score-cell';
-            totalCell.style.background = 'rgba(255,255,255,0.1)';
+            totalCell.style.background = 'rgba(255,255,255,0.05)';
             const totalDisplay = document.createElement('div');
             totalDisplay.id = `player-total-${pIndex}`;
-            totalDisplay.style.fontSize = '1.5rem';
-            totalDisplay.style.fontWeight = '700';
+            totalDisplay.style.fontSize = '2rem';
+            totalDisplay.style.fontWeight = '800';
             totalDisplay.style.color = 'white';
             totalDisplay.textContent = '0';
             totalCell.appendChild(totalDisplay);
@@ -1055,7 +1063,7 @@
 
         const finalCell = document.createElement('div');
         finalCell.className = 'total-cell';
-        finalCell.style.background = 'rgba(0,0,0,0.2)';
+        finalCell.style.background = 'rgba(0,0,0,0.15)';
         finalCell.style.color = 'white';
         totalsColumn.appendChild(finalCell);
 
@@ -1063,7 +1071,6 @@
     }
 
     function checkHappy(handNumber) {
-        // Check if sum of all bids equals the hand number
         let totalBids = 0;
         let allBidsEntered = true;
 
@@ -1131,18 +1138,14 @@
             players[pIndex].total = runningTotal;
         });
 
-        // Check for "Happy" on all hands
         for (let hand = 1; hand <= MAX_HANDS; hand++) {
             checkHappy(hand);
         }
 
-        updateFloatingScoreboard();
+        updatePlayerSidebar();
     }
 
-    function updateFloatingScoreboard() {
-        const rankingsDiv = document.getElementById('score-rankings');
-        if (!rankingsDiv) return;
-        
+    function updatePlayerSidebar() {
         const sortedPlayers = players.map((p, idx) => ({
             name: p.name,
             total: p.total,
@@ -1151,26 +1154,34 @@
         
         const highestScore = sortedPlayers.length > 0 ? sortedPlayers[0].total : 0;
         const lowestScore = sortedPlayers.length > 0 ? sortedPlayers[sortedPlayers.length - 1].total : 0;
-        
-        rankingsDiv.innerHTML = sortedPlayers.map((player, rank) => {
-            const isLeader = player.total === highestScore && player.total > 0 && sortedPlayers.length > 1;
-            const isLastPlace = sortedPlayers.length > 1 && player.total === lowestScore && player.total < highestScore;
-            const scoreClass = player.total < 0 ? 'negative' : '';
+
+        players.forEach((player, pIndex) => {
+            const nameDisplay = document.getElementById(`player-name-${pIndex}`);
+            const totalDisplay = document.getElementById(`player-total-sidebar-${pIndex}`);
             
-            let emoji = '';
-            if (isLeader) {
-                emoji = '👑 ';
-            } else if (isLastPlace) {
-                emoji = '💩 ';
+            if (nameDisplay && totalDisplay) {
+                const isLeader = player.total === highestScore && player.total > 0 && players.length > 1;
+                const isLastPlace = players.length > 1 && player.total === lowestScore && player.total < highestScore;
+                
+                let emoji = '';
+                if (isLeader) {
+                    emoji = '👑 ';
+                } else if (isLastPlace) {
+                    emoji = '💩 ';
+                }
+                
+                nameDisplay.textContent = emoji + player.name;
+                totalDisplay.textContent = player.total;
+                
+                if (player.total > 0) {
+                    totalDisplay.className = 'player-total-display positive';
+                } else if (player.total < 0) {
+                    totalDisplay.className = 'player-total-display negative';
+                } else {
+                    totalDisplay.className = 'player-total-display';
+                }
             }
-            
-            return `
-                <div class="score-item ${isLeader ? 'leader' : ''}">
-                    <span class="player-name">${emoji}${player.name}</span>
-                    <span class="player-score ${scoreClass}">${player.total}</span>
-                </div>
-            `;
-        }).join('');
+        });
     }
 </script>
 
