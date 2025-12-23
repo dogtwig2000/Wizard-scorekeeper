@@ -29,6 +29,7 @@
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --row-height: 140px;
         }
 
         body {
@@ -286,6 +287,80 @@
             margin-top: 24px;
         }
 
+        /* Floating Scoreboard */
+        .floating-scoreboard {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            min-width: 200px;
+            max-width: 280px;
+            border: 3px solid;
+            border-image: var(--bg-gradient) 1;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .floating-scoreboard h3 {
+            margin: 0 0 12px 0;
+            font-size: 1rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin: 6px 0;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .score-item.leader {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid var(--accent);
+            font-weight: 700;
+        }
+
+        .score-item.leader .player-name::before {
+            content: '👑 ';
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .player-score {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .score-item.leader .player-score {
+            color: var(--accent);
+        }
+
+        .player-score.negative {
+            color: var(--danger);
+        }
+
         /* Horizontal Scrolling Score Table */
         .score-container {
             display: flex;
@@ -322,7 +397,7 @@
         }
 
         .player-row {
-            flex: 1;
+            height: var(--row-height);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -363,7 +438,7 @@
 
         .hand-column {
             flex-shrink: 0;
-            width: 200px;
+            width: 220px;
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border);
@@ -376,15 +451,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            gap: 4px;
             background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
             font-weight: 700;
             font-size: 1.5rem;
             color: var(--primary);
             border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        .happy-indicator {
+            font-size: 2rem;
+            animation: bounce 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         .score-cell {
-            flex: 1;
+            height: var(--row-height);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -534,16 +622,6 @@
             display: none;
         }
 
-        .scroll-hint {
-            text-align: center;
-            padding: 12px;
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: var(--text-dark);
-            font-weight: 600;
-            border-radius: 8px;
-            margin-bottom: 16px;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
@@ -577,25 +655,13 @@
             }
 
             .hand-column {
-                width: 180px;
+                width: 200px;
             }
-        }
 
-        @media (orientation: portrait) {
-            .rotate-message {
-                display: block;
-                text-align: center;
-                padding: 20px;
-                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-                border-radius: 12px;
-                margin-bottom: 16px;
-                font-weight: 600;
-            }
-        }
-
-        @media (orientation: landscape) {
-            .rotate-message {
-                display: none;
+            .floating-scoreboard {
+                position: static;
+                margin: 0 auto 20px;
+                max-width: 100%;
             }
         }
     </style>
@@ -652,12 +718,9 @@
         </div>
 
         <div id="game-section" class="hidden">
-            <div class="rotate-message">
-                📱 💡 Tip: Rotate to landscape mode for best experience!
-            </div>
-
-            <div class="scroll-hint">
-                ⬅️ Swipe left/right to see different hands ➡️
+            <div class="floating-scoreboard" id="floating-scoreboard">
+                <h3>🏆 Standings</h3>
+                <div id="score-rankings"></div>
             </div>
 
             <div class="score-container">
@@ -814,7 +877,7 @@
             // Hand header
             const handHeader = document.createElement('div');
             handHeader.className = 'hand-header';
-            handHeader.textContent = `#${hand}`;
+            handHeader.innerHTML = `<div>#${hand}</div><div class="happy-indicator" id="happy-${hand}" style="display:none;">😊</div>`;
             handColumn.appendChild(handHeader);
 
             // Score cells for each player
@@ -858,7 +921,7 @@
                 bidInput.min = '0';
                 bidInput.max = hand;
                 bidInput.value = '';
-                bidInput.inputMode = 'none'; // Prevents keyboard on mobile
+                bidInput.inputMode = 'none';
 
                 const bidIncBtn = document.createElement('button');
                 bidIncBtn.className = 'increment-btn btn-bid';
@@ -914,7 +977,7 @@
                 trickInput.min = '0';
                 trickInput.max = hand;
                 trickInput.value = '';
-                trickInput.inputMode = 'none'; // Prevents keyboard on mobile
+                trickInput.inputMode = 'none';
 
                 const trickIncBtn = document.createElement('button');
                 trickIncBtn.className = 'increment-btn btn-trick';
@@ -995,6 +1058,30 @@
         scoresContainer.appendChild(totalsColumn);
     }
 
+    function checkHappy(handNumber) {
+        // Check if sum of all bids equals the hand number
+        let totalBids = 0;
+        let allBidsEntered = true;
+
+        for (let pIndex = 0; pIndex < players.length; pIndex++) {
+            const bidInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handNumber-1}"][data-type="bid"]`);
+            if (bidInput && bidInput.value !== '') {
+                totalBids += parseInt(bidInput.value) || 0;
+            } else {
+                allBidsEntered = false;
+            }
+        }
+
+        const happyIndicator = document.getElementById(`happy-${handNumber}`);
+        if (happyIndicator) {
+            if (allBidsEntered && totalBids === handNumber) {
+                happyIndicator.style.display = 'block';
+            } else {
+                happyIndicator.style.display = 'none';
+            }
+        }
+    }
+
     function calculateAll() {
         players.forEach((player, pIndex) => {
             let runningTotal = 0;
@@ -1004,8 +1091,8 @@
                 const trickInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="tricks"]`);
                 const scoreDisplay = document.getElementById(`score-${pIndex}-${handIdx}`);
 
-                const bid = bidInput.value;
-                const tricks = trickInput.value;
+                const bid = bidInput ? bidInput.value : '';
+                const tricks = trickInput ? trickInput.value : '';
 
                 if (bid !== '' && tricks !== '') {
                     const bidNum = parseInt(bid);
@@ -1019,13 +1106,17 @@
                         handScore = -(10 * diff);
                     }
 
-                    scoreDisplay.textContent = handScore > 0 ? `+${handScore}` : handScore;
-                    scoreDisplay.className = 'round-score ' + (handScore >= 0 ? 'score-pos' : 'score-neg');
+                    if (scoreDisplay) {
+                        scoreDisplay.textContent = handScore > 0 ? `+${handScore}` : handScore;
+                        scoreDisplay.className = 'round-score ' + (handScore >= 0 ? 'score-pos' : 'score-neg');
+                    }
                     
                     runningTotal += handScore;
                 } else {
-                    scoreDisplay.textContent = '-';
-                    scoreDisplay.className = 'round-score';
+                    if (scoreDisplay) {
+                        scoreDisplay.textContent = '-';
+                        scoreDisplay.className = 'round-score';
+                    }
                 }
             }
 
@@ -1035,6 +1126,37 @@
             }
             players[pIndex].total = runningTotal;
         });
+
+        // Check for "Happy" on all hands
+        for (let hand = 1; hand <= MAX_HANDS; hand++) {
+            checkHappy(hand);
+        }
+
+        updateFloatingScoreboard();
+    }
+
+    function updateFloatingScoreboard() {
+        const rankingsDiv = document.getElementById('score-rankings');
+        if (!rankingsDiv) return;
+        
+        const sortedPlayers = players.map((p, idx) => ({
+            name: p.name,
+            total: p.total,
+            index: idx
+        })).sort((a, b) => b.total - a.total);
+        
+        const highestScore = sortedPlayers.length > 0 ? sortedPlayers[0].total : 0;
+        
+        rankingsDiv.innerHTML = sortedPlayers.map((player, rank) => {
+            const isLeader = player.total === highestScore && player.total > 0;
+            const scoreClass = player.total < 0 ? 'negative' : '';
+            return `
+                <div class="score-item ${isLeader ? 'leader' : ''}">
+                    <span class="player-name">${player.name}</span>
+                    <span class="player-score ${scoreClass}">${player.total}</span>
+                </div>
+            `;
+        }).join('');
     }
 </script>
 
