@@ -364,9 +364,9 @@
         /* Horizontal Scrolling Score Table */
         .score-container {
             display: flex;
-            height: calc(100vh - 180px);
+            height: calc(100vh - 80px);
             min-height: 600px;
-            max-height: 800px;
+            max-height: 900px;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: var(--shadow-lg);
@@ -857,6 +857,7 @@
 
         document.getElementById('setup-section').classList.add('hidden');
         document.getElementById('game-section').classList.remove('hidden');
+        document.querySelector('.header').classList.add('hidden');
 
         renderTable();
     }
@@ -921,7 +922,7 @@
                 bidInput.dataset.type = 'bid';
                 bidInput.min = '0';
                 bidInput.max = hand;
-                bidInput.value = '';
+                bidInput.value = '0';
                 bidInput.inputMode = 'none';
 
                 const bidIncBtn = document.createElement('button');
@@ -977,7 +978,9 @@
                 trickInput.dataset.type = 'tricks';
                 trickInput.min = '0';
                 trickInput.max = hand;
-                trickInput.value = '';
+                trickInput.value = '0';
+                trickInput.inputMode = 'none';rickInput.value = '0';
+                trickInput.inputMode = 'none';rickInput.value = '';
                 trickInput.inputMode = 'none';
 
                 const trickIncBtn = document.createElement('button');
