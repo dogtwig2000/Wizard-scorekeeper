@@ -928,22 +928,34 @@
                 const scoreInputs = document.createElement('div');
                 scoreInputs.className = 'score-inputs';
 
-                // BID INPUT WITH BUTTONS
-                const bidWrapper = document.createElement('div');
-                bidWrapper.className = 'input-with-buttons';
+                // Create HTML string instead of DOM manipulation
+                scoreInputs.innerHTML = `
+                    <div class="input-with-buttons">
+                        <div class="input-label">BID</div>
+                        <div class="number-control">
+                            <button class="increment-btn btn-bid bid-dec-${pIndex}-${hand-1}" type="button">−</button>
+                            <input type="number" class="bid-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="bid" min="0" max="${hand}" value="0" inputmode="none">
+                            <button class="increment-btn btn-bid bid-inc-${pIndex}-${hand-1}" type="button">+</button>
+                        </div>
+                    </div>
+                    <div class="input-with-buttons">
+                        <div class="input-label">WON</div>
+                        <div class="number-control">
+                            <button class="increment-btn btn-trick trick-dec-${pIndex}-${hand-1}" type="button">−</button>
+                            <input type="number" class="trick-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="tricks" min="0" max="${hand}" value="0" inputmode="none">
+                            <button class="increment-btn btn-trick trick-inc-${pIndex}-${hand-1}" type="button">+</button>
+                        </div>
+                    </div>
+                `;
 
-                const bidLabel = document.createElement('div');
-                bidLabel.className = 'input-label';
-                bidLabel.textContent = 'BID';
-                bidLabel.style.display = 'block'; // Force display
+                // Add event listeners after elements are created
+                const bidInput = scoreInputs.querySelector(`input[data-type="bid"]`);
+                const trickInput = scoreInputs.querySelector(`input[data-type="tricks"]`);
+                const bidDecBtn = scoreInputs.querySelector(`.bid-dec-${pIndex}-${hand-1}`);
+                const bidIncBtn = scoreInputs.querySelector(`.bid-inc-${pIndex}-${hand-1}`);
+                const trickDecBtn = scoreInputs.querySelector(`.trick-dec-${pIndex}-${hand-1}`);
+                const trickIncBtn = scoreInputs.querySelector(`.trick-inc-${pIndex}-${hand-1}`);
 
-                const bidControl = document.createElement('div');
-                bidControl.className = 'number-control';
-
-                const bidDecBtn = document.createElement('button');
-                bidDecBtn.className = 'increment-btn btn-bid';
-                bidDecBtn.innerHTML = '−';
-                bidDecBtn.type = 'button';
                 bidDecBtn.onclick = (e) => {
                     e.preventDefault();
                     const val = parseInt(bidInput.value) || 0;
@@ -953,21 +965,6 @@
                     }
                 };
 
-                const bidInput = document.createElement('input');
-                bidInput.type = 'number';
-                bidInput.className = 'bid-input';
-                bidInput.dataset.player = pIndex;
-                bidInput.dataset.hand = hand - 1;
-                bidInput.dataset.type = 'bid';
-                bidInput.min = '0';
-                bidInput.max = hand;
-                bidInput.value = '0';
-                bidInput.inputMode = 'none';
-
-                const bidIncBtn = document.createElement('button');
-                bidIncBtn.className = 'increment-btn btn-bid';
-                bidIncBtn.innerHTML = '+';
-                bidIncBtn.type = 'button';
                 bidIncBtn.onclick = (e) => {
                     e.preventDefault();
                     const val = parseInt(bidInput.value) || 0;
@@ -977,31 +974,6 @@
                     }
                 };
 
-                bidInput.addEventListener('input', calculateAll);
-
-                bidControl.appendChild(bidDecBtn);
-                bidControl.appendChild(bidInput);
-                bidControl.appendChild(bidIncBtn);
-                
-                bidWrapper.appendChild(bidLabel);
-                bidWrapper.appendChild(bidControl);
-
-                // TRICKS INPUT WITH BUTTONS
-                const trickWrapper = document.createElement('div');
-                trickWrapper.className = 'input-with-buttons';
-
-                const trickLabel = document.createElement('div');
-                trickLabel.className = 'input-label';
-                trickLabel.textContent = 'WON';
-                trickLabel.style.display = 'block'; // Force display
-
-                const trickControl = document.createElement('div');
-                trickControl.className = 'number-control';
-
-                const trickDecBtn = document.createElement('button');
-                trickDecBtn.className = 'increment-btn btn-trick';
-                trickDecBtn.innerHTML = '−';
-                trickDecBtn.type = 'button';
                 trickDecBtn.onclick = (e) => {
                     e.preventDefault();
                     const val = parseInt(trickInput.value) || 0;
@@ -1011,21 +983,6 @@
                     }
                 };
 
-                const trickInput = document.createElement('input');
-                trickInput.type = 'number';
-                trickInput.className = 'trick-input';
-                trickInput.dataset.player = pIndex;
-                trickInput.dataset.hand = hand - 1;
-                trickInput.dataset.type = 'tricks';
-                trickInput.min = '0';
-                trickInput.max = hand;
-                trickInput.value = '0';
-                trickInput.inputMode = 'none';
-
-                const trickIncBtn = document.createElement('button');
-                trickIncBtn.className = 'increment-btn btn-trick';
-                trickIncBtn.innerHTML = '+';
-                trickIncBtn.type = 'button';
                 trickIncBtn.onclick = (e) => {
                     e.preventDefault();
                     const val = parseInt(trickInput.value) || 0;
@@ -1035,17 +992,8 @@
                     }
                 };
 
+                bidInput.addEventListener('input', calculateAll);
                 trickInput.addEventListener('input', calculateAll);
-
-                trickControl.appendChild(trickDecBtn);
-                trickControl.appendChild(trickInput);
-                trickControl.appendChild(trickIncBtn);
-                
-                trickWrapper.appendChild(trickLabel);
-                trickWrapper.appendChild(trickControl);
-
-                scoreInputs.appendChild(bidWrapper);
-                scoreInputs.appendChild(trickWrapper);
 
                 const scoreDisplay = document.createElement('div');
                 scoreDisplay.id = `score-${pIndex}-${hand-1}`;
