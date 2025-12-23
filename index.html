@@ -935,6 +935,7 @@
                 const bidLabel = document.createElement('div');
                 bidLabel.className = 'input-label';
                 bidLabel.textContent = 'BID';
+                bidLabel.style.display = 'block'; // Force display
 
                 const bidControl = document.createElement('div');
                 bidControl.className = 'number-control';
@@ -942,12 +943,12 @@
                 const bidDecBtn = document.createElement('button');
                 bidDecBtn.className = 'increment-btn btn-bid';
                 bidDecBtn.innerHTML = '−';
+                bidDecBtn.type = 'button';
                 bidDecBtn.onclick = (e) => {
                     e.preventDefault();
-                    const input = bidInput;
-                    const val = parseInt(input.value) || 0;
+                    const val = parseInt(bidInput.value) || 0;
                     if (val > 0) {
-                        input.value = val - 1;
+                        bidInput.value = val - 1;
                         calculateAll();
                     }
                 };
@@ -966,12 +967,12 @@
                 const bidIncBtn = document.createElement('button');
                 bidIncBtn.className = 'increment-btn btn-bid';
                 bidIncBtn.innerHTML = '+';
+                bidIncBtn.type = 'button';
                 bidIncBtn.onclick = (e) => {
                     e.preventDefault();
-                    const input = bidInput;
-                    const val = parseInt(input.value) || 0;
+                    const val = parseInt(bidInput.value) || 0;
                     if (val < hand) {
-                        input.value = val + 1;
+                        bidInput.value = val + 1;
                         calculateAll();
                     }
                 };
@@ -992,6 +993,7 @@
                 const trickLabel = document.createElement('div');
                 trickLabel.className = 'input-label';
                 trickLabel.textContent = 'WON';
+                trickLabel.style.display = 'block'; // Force display
 
                 const trickControl = document.createElement('div');
                 trickControl.className = 'number-control';
@@ -999,12 +1001,12 @@
                 const trickDecBtn = document.createElement('button');
                 trickDecBtn.className = 'increment-btn btn-trick';
                 trickDecBtn.innerHTML = '−';
+                trickDecBtn.type = 'button';
                 trickDecBtn.onclick = (e) => {
                     e.preventDefault();
-                    const input = trickInput;
-                    const val = parseInt(input.value) || 0;
+                    const val = parseInt(trickInput.value) || 0;
                     if (val > 0) {
-                        input.value = val - 1;
+                        trickInput.value = val - 1;
                         calculateAll();
                     }
                 };
@@ -1023,12 +1025,12 @@
                 const trickIncBtn = document.createElement('button');
                 trickIncBtn.className = 'increment-btn btn-trick';
                 trickIncBtn.innerHTML = '+';
+                trickIncBtn.type = 'button';
                 trickIncBtn.onclick = (e) => {
                     e.preventDefault();
-                    const input = trickInput;
-                    const val = parseInt(input.value) || 0;
+                    const val = parseInt(trickInput.value) || 0;
                     if (val < hand) {
-                        input.value = val + 1;
+                        trickInput.value = val + 1;
                         calculateAll();
                     }
                 };
