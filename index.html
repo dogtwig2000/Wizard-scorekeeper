@@ -75,93 +75,6 @@
             font-style: italic;
         }
 
-        /* Floating Scoreboard */
-        .floating-scoreboard {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: var(--shadow-xl);
-            z-index: 1000;
-            min-width: 250px;
-            max-width: 350px;
-            border: 3px solid;
-            border-image: var(--bg-gradient) 1;
-            animation: slideInRight 0.5s ease-out;
-        }
-
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(100px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .floating-scoreboard h3 {
-            margin: 0 0 16px 0;
-            font-size: 1.25rem;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .score-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            margin: 8px 0;
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .score-item:hover {
-            transform: translateX(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .score-item.leader {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 2px solid var(--accent);
-            font-weight: 700;
-        }
-
-        .score-item.leader .player-name::before {
-            content: '👑 ';
-        }
-
-        .player-name {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 1.05rem;
-        }
-
-        .player-score {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .score-item.leader .player-score {
-            color: var(--accent);
-        }
-
-        .player-score.negative {
-            color: var(--danger);
-        }
-
-        @media (max-width: 768px) {
-            .floating-scoreboard {
-                position: static;
-                margin: 20px auto;
-                max-width: 100%;
-            }
-        }
-
         .content {
             padding: 30px;
         }
@@ -271,11 +184,6 @@
             background: var(--danger-dark);
         }
 
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-        }
-
         .btn-quick {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -378,67 +286,116 @@
             margin-top: 24px;
         }
 
-        /* Score Table */
-        .table-wrapper {
-            overflow-x: auto;
-            margin-top: 20px;
+        /* Horizontal Scrolling Score Table */
+        .score-container {
+            display: flex;
+            height: calc(100vh - 200px);
+            min-height: 500px;
             border-radius: 12px;
-            box-shadow: var(--shadow);
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            min-width: 600px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
             background: white;
         }
 
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid var(--border);
-        }
-
-        th {
+        /* Fixed Left Column - Player Names */
+        .players-column {
+            flex-shrink: 0;
+            width: 150px;
             background: var(--bg-gradient);
-            color: white;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            text-transform: uppercase;
-            font-size: 0.875rem;
-            letter-spacing: 0.5px;
-        }
-
-        th:first-child {
-            border-top-left-radius: 12px;
-        }
-
-        th:last-child {
-            border-top-right-radius: 12px;
-        }
-
-        .hand-col {
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            font-weight: 700;
-            width: 60px;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-        
-        /* Table Inputs */
-        .score-input-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            align-items: center;
+            border-right: 3px solid var(--primary-dark);
         }
-        
-        .score-inputs-row {
+
+        .players-header {
+            height: 80px;
             display: flex;
+            align-items: center;
             justify-content: center;
+            background: rgba(0,0,0,0.2);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .player-row {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .total-row {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-top: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* Scrolling Score Columns */
+        .scores-wrapper {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .scores-container {
+            display: flex;
+            height: 100%;
+        }
+
+        .hand-column {
+            flex-shrink: 0;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+            scroll-snap-align: start;
+            background: white;
+        }
+
+        .hand-header {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .score-cell {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            gap: 8px;
+        }
+
+        .score-inputs {
+            display: flex;
             gap: 8px;
         }
 
@@ -476,14 +433,13 @@
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
         }
 
-        /* Round Score Display */
         .round-score {
-            font-size: 0.875rem;
+            font-size: 1rem;
             font-weight: 700;
-            margin-top: 4px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            min-width: 50px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            min-width: 60px;
+            text-align: center;
         }
 
         .score-pos {
@@ -496,65 +452,30 @@
             background: rgba(239, 68, 68, 0.1);
         }
 
-        /* Total Footer */
-        tfoot tr {
-            background: var(--bg-gradient);
-            color: white;
+        .total-cell {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
             font-weight: 700;
-            font-size: 1.3rem;
-        }
-
-        tfoot td {
-            padding: 16px;
-            border: none;
-        }
-
-        tfoot td:first-child {
-            border-bottom-left-radius: 12px;
-        }
-
-        tfoot td:last-child {
-            border-bottom-right-radius: 12px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            border-top: 2px solid var(--border);
         }
 
         .hidden {
             display: none;
         }
-        
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-top: 20px;
-            padding: 16px;
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-            border-radius: 12px;
-            flex-wrap: wrap;
-        }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .legend-box {
-            width: 40px;
-            height: 32px;
-            border-radius: 6px;
-            border: 2px solid;
-        }
-
-        .legend-box-bid {
-            border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.1);
-        }
-
-        .legend-box-trick {
-            border-color: var(--success);
-            background: rgba(16, 185, 129, 0.1);
+        .scroll-hint {
+            text-align: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: var(--text-dark);
+            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 16px;
         }
 
         /* Responsive */
@@ -583,6 +504,32 @@
             button {
                 width: 100%;
                 justify-content: center;
+            }
+
+            .players-column {
+                width: 120px;
+            }
+
+            .hand-column {
+                width: 180px;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .rotate-message {
+                display: block;
+                text-align: center;
+                padding: 20px;
+                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                border-radius: 12px;
+                margin-bottom: 16px;
+                font-weight: 600;
+            }
+        }
+
+        @media (orientation: landscape) {
+            .rotate-message {
+                display: none;
             }
         }
     </style>
@@ -639,29 +586,31 @@
         </div>
 
         <div id="game-section" class="hidden">
-            <div class="floating-scoreboard" id="floating-scoreboard">
-                <h3>🏆 Current Standings</h3>
-                <div id="score-rankings"></div>
+            <div class="rotate-message">
+                📱 💡 Tip: Rotate to landscape mode for best experience!
             </div>
 
-            <div class="table-wrapper">
-                <table id="score-table">
-                    <thead>
-                        <tr id="header-row">
-                            <th class="hand-col">#</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                    </tbody>
-                    <tfoot>
-                        <tr id="footer-row">
-                            <td>TOTAL</td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="scroll-hint">
+                ⬅️ Swipe left/right to see different hands ➡️
             </div>
 
-            <div class="action-section">
+            <div class="score-container">
+                <!-- Fixed Left Column - Player Names -->
+                <div class="players-column">
+                    <div class="players-header">PLAYERS</div>
+                    <div id="player-names-column"></div>
+                    <div class="total-row">TOTAL</div>
+                </div>
+
+                <!-- Scrolling Score Columns -->
+                <div class="scores-wrapper">
+                    <div class="scores-container" id="scores-container">
+                        <!-- Hand columns will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-section" style="margin-top: 20px;">
                 <button class="btn-danger" onclick="location.reload()">
                     🔄 New Game
                 </button>
@@ -783,44 +732,32 @@
     }
 
     function renderTable() {
-        const headerRow = document.getElementById('header-row');
-        const footerRow = document.getElementById('footer-row');
-        const tbody = document.getElementById('table-body');
+        const playerNamesColumn = document.getElementById('player-names-column');
+        const scoresContainer = document.getElementById('scores-container');
 
-        while (headerRow.children.length > 1) {
-            headerRow.removeChild(headerRow.lastChild);
-        }
-        while (footerRow.children.length > 1) {
-            footerRow.removeChild(footerRow.lastChild);
-        }
+        // Render player names in fixed left column
+        playerNamesColumn.innerHTML = players.map((player, idx) => 
+            `<div class="player-row">${player.name}</div>`
+        ).join('');
 
-        players.forEach((player, index) => {
-            const th = document.createElement('th');
-            th.textContent = player.name;
-            headerRow.appendChild(th);
-
-            const td = document.createElement('td');
-            td.id = `total-${index}`;
-            td.textContent = '0';
-            footerRow.appendChild(td);
-        });
-
+        // Create columns for each hand (1-15)
         for (let hand = 1; hand <= MAX_HANDS; hand++) {
-            const tr = document.createElement('tr');
+            const handColumn = document.createElement('div');
+            handColumn.className = 'hand-column';
             
-            const tdNum = document.createElement('td');
-            tdNum.className = 'hand-col';
-            tdNum.textContent = hand;
-            tr.appendChild(tdNum);
+            // Hand header
+            const handHeader = document.createElement('div');
+            handHeader.className = 'hand-header';
+            handHeader.textContent = `#${hand}`;
+            handColumn.appendChild(handHeader);
 
+            // Score cells for each player
             players.forEach((player, pIndex) => {
-                const td = document.createElement('td');
-                
-                const inputGroup = document.createElement('div');
-                inputGroup.className = 'score-input-group';
+                const scoreCell = document.createElement('div');
+                scoreCell.className = 'score-cell';
 
-                const inputsRow = document.createElement('div');
-                inputsRow.className = 'score-inputs-row';
+                const scoreInputs = document.createElement('div');
+                scoreInputs.className = 'score-inputs';
 
                 const bidInput = document.createElement('input');
                 bidInput.type = 'number';
@@ -831,7 +768,7 @@
                 bidInput.dataset.type = 'bid';
                 bidInput.min = '0';
                 bidInput.max = hand;
-                
+
                 const trickInput = document.createElement('input');
                 trickInput.type = 'number';
                 trickInput.placeholder = 'Tricks';
@@ -845,22 +782,62 @@
                 bidInput.addEventListener('input', calculateAll);
                 trickInput.addEventListener('input', calculateAll);
 
-                inputsRow.appendChild(bidInput);
-                inputsRow.appendChild(trickInput);
+                scoreInputs.appendChild(bidInput);
+                scoreInputs.appendChild(trickInput);
 
                 const scoreDisplay = document.createElement('div');
                 scoreDisplay.id = `score-${pIndex}-${hand-1}`;
                 scoreDisplay.className = 'round-score';
                 scoreDisplay.textContent = '-';
 
-                inputGroup.appendChild(inputsRow);
-                inputGroup.appendChild(scoreDisplay);
-                td.appendChild(inputGroup);
-                tr.appendChild(td);
+                scoreCell.appendChild(scoreInputs);
+                scoreCell.appendChild(scoreDisplay);
+                handColumn.appendChild(scoreCell);
             });
 
-            tbody.appendChild(tr);
+            // Total cell for this hand
+            const totalCell = document.createElement('div');
+            totalCell.className = 'total-cell';
+            totalCell.id = `total-col-${hand}`;
+            totalCell.textContent = '';
+            handColumn.appendChild(totalCell);
+
+            scoresContainer.appendChild(handColumn);
         }
+
+        // Add final totals column
+        const totalsColumn = document.createElement('div');
+        totalsColumn.className = 'hand-column';
+        totalsColumn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+
+        const totalsHeader = document.createElement('div');
+        totalsHeader.className = 'hand-header';
+        totalsHeader.style.background = 'rgba(0,0,0,0.2)';
+        totalsHeader.style.color = 'white';
+        totalsHeader.textContent = 'TOTAL';
+        totalsColumn.appendChild(totalsHeader);
+
+        players.forEach((player, pIndex) => {
+            const totalCell = document.createElement('div');
+            totalCell.className = 'score-cell';
+            totalCell.style.background = 'rgba(255,255,255,0.1)';
+            const totalDisplay = document.createElement('div');
+            totalDisplay.id = `player-total-${pIndex}`;
+            totalDisplay.style.fontSize = '1.5rem';
+            totalDisplay.style.fontWeight = '700';
+            totalDisplay.style.color = 'white';
+            totalDisplay.textContent = '0';
+            totalCell.appendChild(totalDisplay);
+            totalsColumn.appendChild(totalCell);
+        });
+
+        const finalCell = document.createElement('div');
+        finalCell.className = 'total-cell';
+        finalCell.style.background = 'rgba(0,0,0,0.2)';
+        finalCell.style.color = 'white';
+        totalsColumn.appendChild(finalCell);
+
+        scoresContainer.appendChild(totalsColumn);
     }
 
     function calculateAll() {
@@ -897,38 +874,12 @@
                 }
             }
 
-            const totalCell = document.getElementById(`total-${pIndex}`);
-            totalCell.textContent = runningTotal;
+            const totalDisplay = document.getElementById(`player-total-${pIndex}`);
+            if (totalDisplay) {
+                totalDisplay.textContent = runningTotal;
+            }
             players[pIndex].total = runningTotal;
         });
-        
-        updateFloatingScoreboard();
-    }
-
-    function updateFloatingScoreboard() {
-        const rankingsDiv = document.getElementById('score-rankings');
-        if (!rankingsDiv) return;
-        
-        // Create a sorted copy of players
-        const sortedPlayers = players.map((p, idx) => ({
-            name: p.name,
-            total: p.total,
-            index: idx
-        })).sort((a, b) => b.total - a.total);
-        
-        // Find the highest score
-        const highestScore = sortedPlayers.length > 0 ? sortedPlayers[0].total : 0;
-        
-        rankingsDiv.innerHTML = sortedPlayers.map((player, rank) => {
-            const isLeader = player.total === highestScore && player.total > 0;
-            const scoreClass = player.total < 0 ? 'negative' : '';
-            return `
-                <div class="score-item ${isLeader ? 'leader' : ''}">
-                    <span class="player-name">${player.name}</span>
-                    <span class="player-score ${scoreClass}">${player.total}</span>
-                </div>
-            `;
-        }).join('');
     }
 </script>
 
