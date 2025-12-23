@@ -338,7 +338,7 @@
         }
 
         .score-item.leader .player-name::before {
-            content: '👑 ';
+            content: '';
         }
 
         .player-name {
@@ -364,8 +364,9 @@
         /* Horizontal Scrolling Score Table */
         .score-container {
             display: flex;
-            height: calc(100vh - 200px);
-            min-height: 500px;
+            height: calc(100vh - 180px);
+            min-height: 600px;
+            max-height: 800px;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: var(--shadow-lg);
@@ -438,7 +439,7 @@
 
         .hand-column {
             flex-shrink: 0;
-            width: 220px;
+            width: 250px;
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border);
@@ -1146,13 +1147,23 @@
         })).sort((a, b) => b.total - a.total);
         
         const highestScore = sortedPlayers.length > 0 ? sortedPlayers[0].total : 0;
+        const lowestScore = sortedPlayers.length > 0 ? sortedPlayers[sortedPlayers.length - 1].total : 0;
         
         rankingsDiv.innerHTML = sortedPlayers.map((player, rank) => {
-            const isLeader = player.total === highestScore && player.total > 0;
+            const isLeader = player.total === highestScore && player.total > 0 && sortedPlayers.length > 1;
+            const isLastPlace = sortedPlayers.length > 1 && player.total === lowestScore && player.total < highestScore;
             const scoreClass = player.total < 0 ? 'negative' : '';
+            
+            let emoji = '';
+            if (isLeader) {
+                emoji = '👑 ';
+            } else if (isLastPlace) {
+                emoji = '💩 ';
+            }
+            
             return `
                 <div class="score-item ${isLeader ? 'leader' : ''}">
-                    <span class="player-name">${player.name}</span>
+                    <span class="player-name">${emoji}${player.name}</span>
                     <span class="player-score ${scoreClass}">${player.total}</span>
                 </div>
             `;
