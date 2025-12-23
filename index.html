@@ -423,7 +423,7 @@
 
         .hand-column {
             flex-shrink: 0;
-            width: 260px;
+            width: 240px;
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border-light);
@@ -741,14 +741,14 @@
                     <h3><span class="card-icon">🎮</span> Current Game</h3>
                 </div>
                 
-                <div class="input-group">
-                    <input type="text" id="new-player-name" placeholder="Enter player name">
+                <div id="player-list">No players added yet</div>
+                
+                <div class="input-group" style="margin-top: 20px;">
+                    <input type="text" id="new-player-name" placeholder="Enter new player name">
                     <button class="btn-primary" onclick="addPlayer()">
-                        ➕ Add Player
+                        ➕ Add New Player
                     </button>
                 </div>
-                
-                <div id="player-list">No players added yet</div>
                 
                 <div class="action-section">
                     <button class="btn-success" onclick="startGame()" id="start-btn" style="display:none; font-size: 1.1rem;">
