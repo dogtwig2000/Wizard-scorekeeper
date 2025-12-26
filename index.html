@@ -1107,16 +1107,16 @@
                 const bid = bidInput ? bidInput.value : '';
                 const tricks = trickInput ? trickInput.value : '';
 
-                // Only calculate if BOTH bid and tricks have been changed from 0
-                // Check if both are non-empty strings AND at least one is not "0"
-                const bidNum = parseInt(bid);
-                const trickNum = parseInt(tricks);
-                
                 // Only calculate score if there's actual gameplay (not just default 0s)
-                if ((bidNum !== 0 || trickNum !== 0) && bid !== '' && tricks !== '') {
+                // Allow calculation when both are 0 (bid 0, won 0 = 20 points)
+                const hasData = bid !== '' && tricks !== '';
+                
+                if (hasData) {
                     let handScore = 0;
 
                     if (bidNum === trickNum) {
+                        // Correct bid: 20 points + 10 per trick
+                        // Special case: bid 0 and won 0 = 20 points
                         handScore = 20 + (10 * trickNum);
                     } else {
                         const diff = Math.abs(bidNum - trickNum);
