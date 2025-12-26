@@ -1107,18 +1107,16 @@
                 const bid = bidInput ? bidInput.value : '';
                 const tricks = trickInput ? trickInput.value : '';
 
-                // Only calculate score if there's actual gameplay (not just default 0s)
-                // Allow calculation when both are 0 (bid 0, won 0 = 20 points)
-                const hasData = bid !== '' && tricks !== '';
-                
-                if (hasData) {
+                if (bid !== '' && tricks !== '') {
+                    const bidNum = parseInt(bid);
+                    const trickNum = parseInt(tricks);
                     let handScore = 0;
 
                     if (bidNum === trickNum) {
                         // Correct bid: 20 points + 10 per trick
-                        // Special case: bid 0 and won 0 = 20 points
                         handScore = 20 + (10 * trickNum);
                     } else {
+                        // Incorrect: -10 for every trick difference
                         const diff = Math.abs(bidNum - trickNum);
                         handScore = -(10 * diff);
                     }
