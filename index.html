@@ -959,6 +959,9 @@
                     if (val > 0) {
                         bidInput.value = val - 1;
                         calculateAll();
+                    } else if (bidInput.value === '') {
+                        bidInput.value = 0;
+                        calculateAll();
                     }
                 };
 
@@ -976,6 +979,9 @@
                     const val = parseInt(trickInput.value) || 0;
                     if (val > 0) {
                         trickInput.value = val - 1;
+                        calculateAll();
+                    } else if (trickInput.value === '') {
+                        trickInput.value = 0;
                         calculateAll();
                     }
                 };
