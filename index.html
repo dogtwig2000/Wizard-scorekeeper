@@ -932,14 +932,14 @@
                     <div class="input-with-buttons">
                         <div class="number-control">
                             <button class="increment-btn btn-bid bid-dec-${pIndex}-${hand-1}" type="button">−</button>
-                            <input type="number" class="bid-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="bid" min="0" max="${hand}" value="0" inputmode="none" placeholder="🎯">
+                            <input type="number" class="bid-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="bid" min="0" max="${hand}" value="" placeholder="0" inputmode="none">
                             <button class="increment-btn btn-bid bid-inc-${pIndex}-${hand-1}" type="button">+</button>
                         </div>
                     </div>
                     <div class="input-with-buttons">
                         <div class="number-control">
                             <button class="increment-btn btn-trick trick-dec-${pIndex}-${hand-1}" type="button">−</button>
-                            <input type="number" class="trick-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="tricks" min="0" max="${hand}" value="0" inputmode="none" placeholder="🏆">
+                            <input type="number" class="trick-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="tricks" min="0" max="${hand}" value="" placeholder="0" inputmode="none">
                             <button class="increment-btn btn-trick trick-inc-${pIndex}-${hand-1}" type="button">+</button>
                         </div>
                     </div>
@@ -1113,6 +1113,7 @@
                 const bid = bidInput ? bidInput.value : '';
                 const tricks = trickInput ? trickInput.value : '';
 
+                // Only calculate if BOTH fields have actual values (not empty)
                 if (bid !== '' && tricks !== '') {
                     const bidNum = parseInt(bid);
                     const trickNum = parseInt(tricks);
