@@ -357,6 +357,19 @@
             line-height: 1.2;
             word-wrap: break-word;
             max-width: 100%;
+            position: relative;
+        }
+
+        .dealer-badge {
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 1.2rem;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .player-total-display {
@@ -711,6 +724,7 @@
 
 <div class="container">
     <div class="header">
+        <div class="version-badge" id="version-badge">v2.0.0</div>
         <h1>🧙‍♂️ Wizard Scorekeeper</h1>
         <div class="header-subtitle">Official score. Please do not rip out any pages.</div>
     </div>
@@ -787,10 +801,14 @@
     let players = [];
     let savedPlayers = [];
     const MAX_HANDS = 15;
+    const APP_VERSION = "v2.0.0";
+    let currentDealer = 0; // Index of current dealer
 
     window.onload = function() {
         loadSavedPlayers();
         renderSavedPlayers();
+        loadGameState();
+        document.getElementById('version-badge').textContent = APP_VERSION;
     };
 
     function loadSavedPlayers() {
@@ -802,6 +820,46 @@
 
     function saveSavedPlayers() {
         localStorage.setItem('wizardSavedPlayers', JSON.stringify(savedPlayers));
+    }
+
+    function saveGameState() {
+        const gameState = {
+            players: players,
+            currentDealer: currentDealer,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('wizardGameState', JSON.stringify(gameState));
+    }
+
+    function loadGameState() {
+        const saved = localStorage.getItem('wizardGameState');
+        if (saved) {
+            try {
+                const gameState = JSON.parse(saved);
+                // Check if game is less than 24 hours old
+                const savedTime = new Date(gameState.timestamp);
+                const now = new Date();
+                const hoursDiff = (now - savedTime) / (1000 * 60 * 60);
+                
+                if (hoursDiff < 24 && gameState.players && gameState.players.length > 0) {
+                    if (confirm('Found a saved game. Would you like to continue it?')) {
+                        players = gameState.players;
+                        currentDealer = gameState.currentDealer || 0;
+                        document.getElementById('setup-section').classList.add('hidden');
+                        document.getElementById('game-section').classList.remove('hidden');
+                        document.querySelector('.header').classList.add('hidden');
+                        renderTable();
+                        restoreGameData();
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading game state:', e);
+            }
+        }
+    }
+
+    function clearGameState() {
+        localStorage.removeItem('wizardGameState');
     }
 
     function savePlayer() {
@@ -889,11 +947,13 @@
     function startGame() {
         if (players.length === 0) return alert("Add at least one player!");
 
+        currentDealer = 0; // First player is dealer
         document.getElementById('setup-section').classList.add('hidden');
         document.getElementById('game-section').classList.remove('hidden');
         document.querySelector('.header').classList.add('hidden');
 
         renderTable();
+        saveGameState();
     }
 
     function renderTable() {
@@ -901,12 +961,13 @@
         const scoresContainer = document.getElementById('scores-container');
 
         // Render player names in fixed left column with scores
-        playerNamesColumn.innerHTML = players.map((player, idx) => 
-            `<div class="player-row">
-                <div class="player-name-display" id="player-name-${idx}">${player.name}</div>
+        playerNamesColumn.innerHTML = players.map((player, idx) => {
+            const dealerBadge = idx === currentDealer ? '<span class="dealer-badge">🎴</span>' : '';
+            return `<div class="player-row">
+                <div class="player-name-display" id="player-name-${idx}">${player.name}${dealerBadge}</div>
                 <div class="player-total-display" id="player-total-sidebar-${idx}">0</div>
-            </div>`
-        ).join('');
+            </div>`;
+        }).join('');
 
         // Create columns for each hand (1-15)
         for (let hand = 1; hand <= MAX_HANDS; hand++) {
@@ -959,11 +1020,11 @@
                     const val = parseInt(bidInput.value) || 0;
                     if (val > 0) {
                         bidInput.value = val - 1;
-                        calculateAll();
                     } else if (bidInput.value === '') {
                         bidInput.value = 0;
-                        calculateAll();
                     }
+                    calculateAll();
+                    saveGameState();
                 };
 
                 bidIncBtn.onclick = (e) => {
@@ -972,8 +1033,9 @@
                     const val = parseInt(bidInput.value) || 0;
                     if (val < hand) {
                         bidInput.value = val + 1;
-                        calculateAll();
                     }
+                    calculateAll();
+                    saveGameState();
                 };
 
                 trickDecBtn.onclick = (e) => {
@@ -982,11 +1044,11 @@
                     const val = parseInt(trickInput.value) || 0;
                     if (val > 0) {
                         trickInput.value = val - 1;
-                        calculateAll();
                     } else if (trickInput.value === '') {
                         trickInput.value = 0;
-                        calculateAll();
                     }
+                    calculateAll();
+                    saveGameState();
                 };
 
                 trickIncBtn.onclick = (e) => {
@@ -995,12 +1057,20 @@
                     const val = parseInt(trickInput.value) || 0;
                     if (val < hand) {
                         trickInput.value = val + 1;
-                        calculateAll();
                     }
+                    calculateAll();
+                    saveGameState();
                 };
 
-                bidInput.addEventListener('input', calculateAll);
-                trickInput.addEventListener('input', calculateAll);
+                bidInput.addEventListener('input', () => {
+                    calculateAll();
+                    saveGameState();
+                });
+
+                trickInput.addEventListener('input', () => {
+                    calculateAll();
+                    saveGameState();
+                });
 
                 const scoreDisplay = document.createElement('div');
                 scoreDisplay.id = `score-${pIndex}-${hand-1}`;
@@ -1160,6 +1230,91 @@
         }
 
         updatePlayerSidebar();
+        checkForGameEnd();
+    }
+
+    function restoreGameData() {
+        // Restore all input values from saved game state
+        players.forEach((player, pIndex) => {
+            for (let handIdx = 0; handIdx < MAX_HANDS; handIdx++) {
+                const bidInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="bid"]`);
+                const trickInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="tricks"]`);
+                
+                // Restore values if they exist in saved data
+                if (player.bids && player.bids[handIdx] !== undefined) {
+                    if (bidInput) {
+                        bidInput.value = player.bids[handIdx];
+                        bidInput.dataset.touched = 'true';
+                    }
+                }
+                if (player.tricks && player.tricks[handIdx] !== undefined) {
+                    if (trickInput) {
+                        trickInput.value = player.tricks[handIdx];
+                        trickInput.dataset.touched = 'true';
+                    }
+                }
+            }
+        });
+        
+        calculateAll();
+    }
+
+    function checkForGameEnd() {
+        // Check if all players have completed all 15 hands
+        let gameComplete = true;
+        
+        for (let pIndex = 0; pIndex < players.length; pIndex++) {
+            const lastHandBid = document.querySelector(`input[data-player="${pIndex}"][data-hand="${MAX_HANDS-1}"][data-type="bid"]`);
+            const lastHandTrick = document.querySelector(`input[data-player="${pIndex}"][data-hand="${MAX_HANDS-1}"][data-type="tricks"]`);
+            
+            if (!lastHandBid || !lastHandTrick || lastHandBid.value === '' || lastHandTrick.value === '') {
+                gameComplete = false;
+                break;
+            }
+        }
+        
+        if (gameComplete) {
+            showWinnerCelebration();
+        }
+    }
+
+    function showWinnerCelebration() {
+        // Find the winner
+        const sortedPlayers = [...players].sort((a, b) => b.total - a.total);
+        const winner = sortedPlayers[0];
+        
+        // Create celebration overlay
+        const celebration = document.createElement('div');
+        celebration.className = 'winner-celebration';
+        celebration.innerHTML = `
+            <div class="winner-card">
+                <h2>🎉 GAME OVER! 🎉</h2>
+                <div class="winner-name">👑 ${winner.name} 👑</div>
+                <div>WINS WITH</div>
+                <div class="winner-score">${winner.total}</div>
+                <div style="margin-top: 20px;">
+                    <button class="btn-success" onclick="this.closest('.winner-celebration').remove(); location.reload();" style="font-size: 1.2rem; padding: 16px 32px;">
+                        🎯 New Game
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(celebration);
+        
+        // Add confetti
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = ['#fbbf24', '#f59e0b', '#10b981', '#6366f1', '#ef4444'][Math.floor(Math.random() * 5)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                celebration.appendChild(confetti);
+            }, i * 30);
+        }
+        
+        clearGameState();
     }
 
     function updatePlayerSidebar() {
