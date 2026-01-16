@@ -746,7 +746,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="version-badge" id="version-badge">v2.4.0</div>
+        <div class="version-badge" id="version-badge">v2.4.1</div>
         <h1>🧙‍♂️ Wizard Scorekeeper</h1>
         <div class="header-subtitle">Official score. Please do not rip out any pages.</div>
     </div>
@@ -812,7 +812,7 @@
 
             <div class="action-section" style="margin-top: 20px; padding: 0 20px 20px;">
                 <button class="btn-dealer" onclick="nextDealer()">
-                    🎴 Next Dealer
+                    🎴 Next Hand
                 </button>
                 <button class="btn-danger" onclick="location.reload()">
                     🔄 New Game
@@ -826,7 +826,7 @@
     let players = [];
     let savedPlayers = [];
     const MAX_HANDS = 15;
-    const APP_VERSION = "v2.4.0";
+    const APP_VERSION = "v2.4.1";
     let currentDealer = 0; // Index of current dealer
 
     window.onload = function() {
@@ -1272,6 +1272,21 @@
 
     function nextDealer() {
         currentDealer = (currentDealer + 1) % players.length;
+        console.log('Advanced dealer to player', currentDealer);
+        
+        // Force update all player displays
+        players.forEach((player, pIndex) => {
+            const nameDisplay = document.getElementById(`player-name-${pIndex}`);
+            if (nameDisplay) {
+                const isDealer = pIndex === currentDealer;
+                if (isDealer) {
+                    nameDisplay.classList.add('is-dealer');
+                } else {
+                    nameDisplay.classList.remove('is-dealer');
+                }
+            }
+        });
+        
         updatePlayerSidebar();
         saveGameState();
     }
