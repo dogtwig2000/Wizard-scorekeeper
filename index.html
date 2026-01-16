@@ -732,7 +732,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="version-badge" id="version-badge">v2.3.0</div>
+        <div class="version-badge" id="version-badge">v2.3.1</div>
         <h1>🧙‍♂️ Wizard Scorekeeper</h1>
         <div class="header-subtitle">Official score. Please do not rip out any pages.</div>
     </div>
@@ -809,7 +809,7 @@
     let players = [];
     let savedPlayers = [];
     const MAX_HANDS = 15;
-    const APP_VERSION = "v2.3.0";
+    const APP_VERSION = "v2.3.1";
     let currentDealer = 0; // Index of current dealer
 
     window.onload = function() {
@@ -1187,9 +1187,6 @@
     }
 
     function calculateAll() {
-        // Track which hands are complete
-        const completedHands = new Set();
-        
         players.forEach((player, pIndex) => {
             let runningTotal = 0;
             const bids = [];
@@ -1214,10 +1211,8 @@
                     let handScore = 0;
 
                     if (bidNum === trickNum) {
-                        // Correct bid: 20 points + 10 per trick
                         handScore = 20 + (10 * trickNum);
                     } else {
-                        // Incorrect: -10 for every trick difference
                         const diff = Math.abs(bidNum - trickNum);
                         handScore = -(10 * diff);
                     }
@@ -1228,11 +1223,6 @@
                     }
                     
                     runningTotal += handScore;
-                    
-                    // Mark this hand as potentially complete
-                    if (allPlayersCompletedHand(handIdx)) {
-                        completedHands.add(handIdx);
-                    }
                 } else {
                     if (scoreDisplay) {
                         scoreDisplay.textContent = '-';
@@ -1252,15 +1242,8 @@
             players[pIndex].total = runningTotal;
         });
 
-        // Find the most recently completed hand and advance dealer if needed
-        const maxCompletedHand = Math.max(-1, ...completedHands);
-        if (maxCompletedHand >= 0 && maxCompletedHand >= currentDealer) {
-            // Dealer should be at the next position after the most recently completed hand
-            const expectedDealer = (maxCompletedHand + 1) % players.length;
-            if (expectedDealer !== currentDealer) {
-                currentDealer = expectedDealer;
-            }
-        }
+        // Check and advance dealer based on completed hands
+        advanceDealerIfNeeded();
 
         for (let hand = 1; hand <= MAX_HANDS; hand++) {
             checkHappy(hand);
@@ -1268,6 +1251,31 @@
 
         updatePlayerSidebar();
         checkForGameEnd();
+    }
+
+    function advanceDealerIfNeeded() {
+        // Find the last completed hand
+        let lastCompletedHand = -1;
+        
+        for (let handIdx = 0; handIdx < MAX_HANDS; handIdx++) {
+            if (allPlayersCompletedHand(handIdx)) {
+                lastCompletedHand = handIdx;
+            } else {
+                // Stop at first incomplete hand
+                break;
+            }
+        }
+        
+        // Dealer should advance once per completed hand
+        // Hand 0 complete → dealer is player 1
+        // Hand 1 complete → dealer is player 2, etc.
+        if (lastCompletedHand >= 0) {
+            const expectedDealer = (lastCompletedHand + 1) % players.length;
+            if (currentDealer !== expectedDealer) {
+                currentDealer = expectedDealer;
+                console.log(`Dealer advanced to player ${currentDealer} after hand ${lastCompletedHand}`);
+            }
+        }
     }
 
     function allPlayersCompletedHand(handIdx) {
