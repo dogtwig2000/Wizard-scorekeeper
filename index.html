@@ -1180,6 +1180,8 @@
     function calculateAll() {
         players.forEach((player, pIndex) => {
             let runningTotal = 0;
+            const bids = [];
+            const tricks = [];
 
             for (let handIdx = 0; handIdx < MAX_HANDS; handIdx++) {
                 const bidInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="bid"]`);
@@ -1187,12 +1189,16 @@
                 const scoreDisplay = document.getElementById(`score-${pIndex}-${handIdx}`);
 
                 const bid = bidInput ? bidInput.value : '';
-                const tricks = trickInput ? trickInput.value : '';
+                const tricks_val = trickInput ? trickInput.value : '';
+
+                // Store bid and trick values for saving
+                bids.push(bid !== '' ? parseInt(bid) : undefined);
+                tricks.push(tricks_val !== '' ? parseInt(tricks_val) : undefined);
 
                 // Only calculate if BOTH fields have actual values (not empty)
-                if (bid !== '' && tricks !== '') {
+                if (bid !== '' && tricks_val !== '') {
                     const bidNum = parseInt(bid);
-                    const trickNum = parseInt(tricks);
+                    const trickNum = parseInt(tricks_val);
                     let handScore = 0;
 
                     if (bidNum === trickNum) {
@@ -1210,6 +1216,11 @@
                     }
                     
                     runningTotal += handScore;
+                    
+                    // Move dealer to next player when this hand is complete for all players
+                    if (handIdx === currentDealer && allPlayersCompletedHand(handIdx)) {
+                        advanceDealer();
+                    }
                 } else {
                     if (scoreDisplay) {
                         scoreDisplay.textContent = '-';
@@ -1217,6 +1228,10 @@
                     }
                 }
             }
+
+            // Save bids and tricks for game state
+            player.bids = bids;
+            player.tricks = tricks;
 
             const totalDisplay = document.getElementById(`player-total-${pIndex}`);
             if (totalDisplay) {
@@ -1231,6 +1246,23 @@
 
         updatePlayerSidebar();
         checkForGameEnd();
+    }
+
+    function allPlayersCompletedHand(handIdx) {
+        for (let pIndex = 0; pIndex < players.length; pIndex++) {
+            const bidInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="bid"]`);
+            const trickInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="tricks"]`);
+            
+            if (!bidInput || !trickInput || bidInput.value === '' || trickInput.value === '') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function advanceDealer() {
+        currentDealer = (currentDealer + 1) % players.length;
+        updatePlayerSidebar();
     }
 
     function restoreGameData() {
