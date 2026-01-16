@@ -732,7 +732,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="version-badge" id="version-badge">v2.2.1</div>
+        <div class="version-badge" id="version-badge">v2.3.0</div>
         <h1>🧙‍♂️ Wizard Scorekeeper</h1>
         <div class="header-subtitle">Official score. Please do not rip out any pages.</div>
     </div>
@@ -809,7 +809,7 @@
     let players = [];
     let savedPlayers = [];
     const MAX_HANDS = 15;
-    const APP_VERSION = "v2.2.1";
+    const APP_VERSION = "v2.3.0";
     let currentDealer = 0; // Index of current dealer
 
     window.onload = function() {
@@ -1187,6 +1187,9 @@
     }
 
     function calculateAll() {
+        // Track which hands are complete
+        const completedHands = new Set();
+        
         players.forEach((player, pIndex) => {
             let runningTotal = 0;
             const bids = [];
@@ -1226,9 +1229,9 @@
                     
                     runningTotal += handScore;
                     
-                    // Move dealer to next player when this hand is complete for all players
-                    if (handIdx === currentDealer && allPlayersCompletedHand(handIdx)) {
-                        advanceDealer();
+                    // Mark this hand as potentially complete
+                    if (allPlayersCompletedHand(handIdx)) {
+                        completedHands.add(handIdx);
                     }
                 } else {
                     if (scoreDisplay) {
@@ -1249,6 +1252,16 @@
             players[pIndex].total = runningTotal;
         });
 
+        // Find the most recently completed hand and advance dealer if needed
+        const maxCompletedHand = Math.max(-1, ...completedHands);
+        if (maxCompletedHand >= 0 && maxCompletedHand >= currentDealer) {
+            // Dealer should be at the next position after the most recently completed hand
+            const expectedDealer = (maxCompletedHand + 1) % players.length;
+            if (expectedDealer !== currentDealer) {
+                currentDealer = expectedDealer;
+            }
+        }
+
         for (let hand = 1; hand <= MAX_HANDS; hand++) {
             checkHappy(hand);
         }
@@ -1267,11 +1280,6 @@
             }
         }
         return true;
-    }
-
-    function advanceDealer() {
-        currentDealer = (currentDealer + 1) % players.length;
-        updatePlayerSidebar();
     }
 
     function restoreGameData() {
