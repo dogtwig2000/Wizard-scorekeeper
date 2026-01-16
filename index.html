@@ -339,7 +339,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px;
+            padding: 12px 8px;
             color: white;
             border-bottom: 1px solid rgba(255,255,255,0.15);
             text-align: center;
@@ -352,18 +352,28 @@
         }
 
         .player-name-display {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.3;
             word-wrap: break-word;
             max-width: 100%;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .player-status-line {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 1rem;
         }
 
         .dealer-badge {
             display: inline-block;
-            margin-left: 4px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             animation: rotate 2s linear infinite;
         }
 
@@ -724,7 +734,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="version-badge" id="version-badge">v2.0.0</div>
+        <div class="version-badge" id="version-badge">v2.1.0</div>
         <h1>🧙‍♂️ Wizard Scorekeeper</h1>
         <div class="header-subtitle">Official score. Please do not rip out any pages.</div>
     </div>
@@ -801,7 +811,7 @@
     let players = [];
     let savedPlayers = [];
     const MAX_HANDS = 15;
-    const APP_VERSION = "v2.0.0";
+    const APP_VERSION = "v2.1.0";
     let currentDealer = 0; // Index of current dealer
 
     window.onload = function() {
