@@ -2,1445 +2,1224 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wizard Scorekeeper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Wizard</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --secondary: #8b5cf6;
-            --success: #10b981;
-            --success-dark: #059669;
-            --success-light: #34d399;
-            --danger: #ef4444;
-            --danger-dark: #dc2626;
-            --accent: #f59e0b;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --card-bg: #ffffff;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --text-lighter: #94a3b8;
-            --border: #e2e8f0;
-            --border-light: #f1f5f9;
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            --row-height: 145px;
+            --bg-primary: #000000;
+            --bg-secondary: #1c1c1e;
+            --bg-tertiary: #2c2c2e;
+            --label-primary: #ffffff;
+            --label-secondary: #ebebf599;
+            --label-tertiary: #ebebf54d;
+            --separator: #38383a;
+            --fill-primary: #787880;
+            --fill-secondary: #78788033;
+            --fill-tertiary: #7676801f;
+            --system-blue: #0a84ff;
+            --system-green: #30d158;
+            --system-orange: #ff9f0a;
+            --system-red: #ff453a;
+            --system-gray: #8e8e93;
+            --system-gray2: #636366;
+            --system-gray3: #48484a;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg-gradient);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+            background: var(--bg-primary);
+            color: var(--label-primary);
             min-height: 100vh;
-            padding: 0;
-            color: var(--text-dark);
+            overflow: hidden;
             -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            background: var(--card-bg);
-            min-height: 100vh;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .header {
-            background: var(--bg-gradient);
-            padding: 40px 20px;
-            text-align: center;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            letter-spacing: -0.5px;
-        }
-
-        .header-subtitle {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            margin-top: 8px;
-            font-style: italic;
-            font-weight: 300;
-        }
-
-        .content {
-            padding: 24px 20px;
-        }
-
-        /* Card Sections */
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid var(--border-light);
-        }
-
-        .card-header h3 {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: -0.3px;
-        }
-
-        .card-icon {
-            font-size: 1.5rem;
-        }
-
-        /* Input Styles */
-        input[type="text"] {
-            padding: 14px 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            background: white;
+            position: fixed;
             width: 100%;
-            max-width: 300px;
-            font-weight: 500;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        .screen {
+            display: none;
+            height: 100vh;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Button Styles */
-        button {
-            padding: 14px 24px;
-            cursor: pointer;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--shadow-sm);
-            letter-spacing: -0.2px;
-        }
-
-        button:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: var(--success-dark);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: var(--danger-dark);
-        }
-
-        .btn-quick {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 12px 20px;
-            margin: 6px;
-            font-size: 0.95rem;
-            animation: slideIn 0.3s ease-out;
-            box-shadow: var(--shadow);
-        }
-
-        .btn-quick:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.35s cubic-bezier(0.32, 0.72, 0, 1);
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from { 
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 0.875rem;
-            margin-left: 8px;
-        }
-
-        /* Input Groups */
-        .input-group {
+        /* iOS Navigation Bar */
+        .nav-bar {
             display: flex;
-            gap: 12px;
             align-items: center;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 44px;
+            flex-shrink: 0;
+            border-bottom: 0.5px solid var(--separator);
+            background: rgba(28, 28, 30, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
-        .saved-player-tag {
-            display: inline-flex;
+        .nav-back {
+            display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            background: var(--border-light);
-            border-radius: 10px;
-            margin: 6px;
-            font-weight: 600;
-            color: var(--text-dark);
-            border: 2px solid transparent;
-            transition: all 0.2s ease;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .saved-player-tag:hover {
-            border-color: var(--danger);
-            background: #fee2e2;
-        }
-
-        .btn-remove-tag {
-            background: var(--danger);
-            color: white;
+            gap: 6px;
+            color: var(--system-blue);
+            font-size: 17px;
+            font-weight: 400;
+            background: none;
             border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
-            font-size: 14px;
             padding: 0;
-            box-shadow: none;
-            transition: all 0.2s ease;
+            transition: opacity 0.2s;
         }
 
-        .btn-remove-tag:hover {
-            transform: scale(1.15) rotate(90deg);
-            box-shadow: var(--shadow-sm);
+        .nav-back:active {
+            opacity: 0.3;
         }
 
-        .quick-add-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 24px;
-            color: var(--text-lighter);
-            font-style: italic;
-        }
-
-        #player-list {
-            margin-top: 16px;
-            padding: 14px 16px;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border-radius: 12px;
-            color: var(--text-dark);
+        .nav-title {
+            font-size: 17px;
             font-weight: 600;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #bae6fd;
+            letter-spacing: -0.4px;
         }
 
-        .action-section {
-            text-align: center;
-            margin-top: 24px;
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .nav-action {
+            color: var(--system-blue);
+            font-size: 17px;
+            font-weight: 400;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
         }
 
-        .btn-dealer {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #000;
+        .nav-action:active {
+            opacity: 0.3;
+        }
+
+        /* iOS Large Title */
+        .large-title-section {
+            padding: 8px 20px 16px;
+            flex-shrink: 0;
+        }
+
+        .large-title {
+            font-size: 34px;
             font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
 
-        .btn-dealer:hover {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        .subtitle {
+            font-size: 13px;
+            color: var(--label-secondary);
+            margin-top: 4px;
+            font-weight: 400;
         }
 
-        /* Horizontal Scrolling Score Table */
-        .score-container {
-            display: flex;
-            height: calc(100vh - 60px);
-            min-height: 600px;
-            max-height: 100vh;
-            background: white;
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 0 0 20px;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        /* iOS List Groups */
+        .list-group {
+            margin: 16px 0;
+        }
+
+        .list-header {
+            padding: 0 20px 6px;
+            font-size: 13px;
+            color: var(--label-secondary);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: -0.08px;
+        }
+
+        .list {
+            background: var(--bg-secondary);
+            margin: 0 16px;
+            border-radius: 10px;
             overflow: hidden;
         }
 
-        /* Fixed Left Column - Player Names */
-        .players-column {
-            flex-shrink: 0;
-            width: 160px;
-            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid rgba(255,255,255,0.2);
-            box-shadow: var(--shadow);
-        }
-
-        .players-header {
-            height: 70px;
+        .list-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.15);
-            color: white;
-            font-weight: 800;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding: 8px;
-            gap: 8px;
-            flex-direction: column;
-        }
-
-        .btn-next-hand {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #000;
-            font-weight: 700;
-            padding: 6px 12px;
-            font-size: 0.75rem;
-            border-radius: 8px;
-            border: none;
+            gap: 12px;
+            padding: 11px 16px;
+            border-bottom: 0.5px solid var(--separator);
+            min-height: 44px;
             cursor: pointer;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
+            transition: background 0.15s;
         }
 
-        .btn-next-hand:hover {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            transform: translateY(-1px);
+        .list-item:last-child {
+            border-bottom: none;
         }
 
-        .btn-next-hand:active {
-            transform: translateY(0);
+        .list-item:active {
+            background: var(--bg-tertiary);
         }
 
-        .player-row {
-            height: var(--row-height);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 8px;
-            color: white;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            text-align: center;
-            gap: 6px;
-            transition: background 0.2s ease;
+        .list-item.selected {
+            background: var(--fill-tertiary);
         }
 
-        .player-row:hover {
-            background: rgba(255,255,255,0.1);
+        .list-item.dealer {
+            background: rgba(255, 159, 10, 0.15);
         }
 
-        .player-name-display {
-            font-size: 0.95rem;
-            font-weight: 700;
-            line-height: 1.3;
-            word-wrap: break-word;
-            max-width: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .player-name-display.is-dealer {
-            font-weight: 900;
-            font-style: italic;
-            color: #fbbf24;
-            text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
-            font-size: 1.05rem;
-        }
-
-        .player-status-line {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 1rem;
-        }
-
-        .player-total-display {
-            font-size: 2rem;
-            font-weight: 800;
-            color: white;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            letter-spacing: -1px;
-        }
-
-        .player-total-display.negative {
-            color: #fca5a5;
-        }
-
-        .player-total-display.positive {
-            color: #6ee7b7;
-        }
-
-        .total-row {
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.15);
-            color: white;
-            font-weight: 800;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border-top: 1px solid rgba(255,255,255,0.2);
-        }
-
-        /* Scrolling Score Columns */
-        .scores-wrapper {
-            flex: 1;
-            overflow-x: auto;
-            overflow-y: hidden;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            background: linear-gradient(to bottom, #f8fafc 0%, #ffffff 100%);
-        }
-
-        .scores-wrapper::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .scores-wrapper::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        .scores-wrapper::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .scores-wrapper::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .scores-container {
-            display: flex;
-            height: 100%;
-        }
-
-        .hand-column {
+        /* Checkbox */
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--system-gray2);
             flex-shrink: 0;
-            width: 240px;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border-light);
-            scroll-snap-align: start;
-            background: white;
-            transition: background 0.2s ease;
-        }
-
-        .hand-column:hover {
-            background: #fafbfc;
-        }
-
-        .hand-header {
-            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            gap: 4px;
-            background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
-            font-weight: 800;
-            font-size: 1.75rem;
-            color: var(--primary);
-            border-bottom: 2px solid var(--border-light);
-            position: relative;
-            letter-spacing: -1px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .happy-indicator {
-            font-size: 1.5rem;
-            animation: bounce 0.6s ease-in-out;
-            position: absolute;
-            top: 8px;
-            right: 8px;
+        .checkbox.checked {
+            background: var(--system-blue);
+            border-color: var(--system-blue);
         }
 
-        .error-indicator {
-            font-size: 2.5rem;
-            animation: pulse 1s ease-in-out infinite;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8));
+        .checkbox.checked::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .hand-header.has-error {
-            background: linear-gradient(to bottom, #fee2e2 0%, #fecaca 100%) !important;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-
-        .score-cell {
-            height: var(--row-height);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 12px 20px 12px;
-            border-bottom: 1px solid var(--border-light);
-            gap: 12px;
-            background: white;
-            transition: background 0.2s ease;
-        }
-
-        .score-cell:hover {
-            background: #fafbfc;
-        }
-
-        .score-inputs {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .input-with-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .number-control {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .list-label {
             flex: 1;
-            justify-content: center;
+            font-size: 17px;
+            font-weight: 400;
+            letter-spacing: -0.4px;
         }
 
-        .increment-btn {
+        .list-label.dealer {
+            color: var(--system-orange);
+            font-weight: 600;
+        }
+
+        .list-value {
+            font-size: 17px;
+            color: var(--label-secondary);
+            font-weight: 400;
+        }
+
+        /* Buttons */
+        .button-group {
+            padding: 0 16px 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-primary {
+            width: 100%;
+            height: 50px;
+            background: var(--system-blue);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.4px;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+            opacity: 0.8;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            height: 50px;
+            background: var(--bg-secondary);
+            border: none;
+            border-radius: 10px;
+            color: var(--system-blue);
+            font-size: 17px;
+            font-weight: 400;
+            letter-spacing: -0.4px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.15s;
+        }
+
+        .btn-secondary:active {
+            opacity: 0.5;
+        }
+
+        .btn-orange {
+            background: var(--system-orange);
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* Input */
+        .input-group {
+            background: var(--bg-secondary);
+            margin: 16px 16px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .input-wrapper {
+            padding: 11px 16px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--label-primary);
+            font-size: 17px;
+            font-weight: 400;
+            letter-spacing: -0.4px;
+            outline: none;
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--label-tertiary);
+        }
+
+        /* Round Badge */
+        .round-badge {
+            background: var(--label-primary);
+            color: var(--bg-primary);
+            font-size: 15px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Score Entry */
+        .score-entry {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--separator);
+            min-height: 72px;
+        }
+
+        .score-entry:last-child {
+            border-bottom: none;
+        }
+
+        .score-entry.dealer {
+            background: rgba(255, 159, 10, 0.1);
+        }
+
+        .entry-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .entry-name {
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.4px;
+        }
+
+        .entry-name.dealer {
+            color: var(--system-orange);
+        }
+
+        .entry-detail {
+            font-size: 15px;
+            color: var(--label-secondary);
+        }
+
+        .entry-bid {
+            color: var(--system-green);
+            font-weight: 600;
+        }
+
+        .entry-points {
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .entry-points.positive {
+            background: rgba(48, 209, 88, 0.2);
+            color: var(--system-green);
+        }
+
+        .entry-points.negative {
+            background: rgba(255, 69, 58, 0.2);
+            color: var(--system-red);
+        }
+
+        .entry-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn {
             width: 36px;
             height: 36px;
-            padding: 0;
+            background: var(--fill-tertiary);
+            border: none;
+            border-radius: 8px;
+            color: var(--system-blue);
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            font-weight: 700;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            box-shadow: var(--shadow-sm);
-            border: none;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .increment-btn:hover {
-            transform: scale(1.08);
-            box-shadow: var(--shadow);
+        .control-btn:active {
+            transform: scale(0.92);
+            background: var(--fill-secondary);
         }
 
-        .increment-btn:active {
-            transform: scale(0.96);
+        .control-btn.green {
+            color: var(--system-green);
         }
 
-        input[type="number"] {
-            width: 54px;
-            height: 36px;
-            padding: 0;
+        .control-btn.orange {
+            color: var(--system-orange);
+        }
+
+        .control-value {
+            min-width: 32px;
             text-align: center;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 1.125rem;
-            font-weight: 700;
-            transition: all 0.2s ease;
-            -webkit-appearance: none;
-            -moz-appearance: textfield;
-            background: white;
-        }
-
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type="number"]:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-            border-color: var(--primary);
-        }
-
-        .bid-input {
-            border-color: #fbbf24 !important;
-            color: #d97706;
-        }
-
-        .bid-input:focus {
-            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2) !important;
-        }
-
-        .trick-input {
-            border-color: var(--success-light) !important;
-            color: var(--success);
-        }
-
-        .trick-input:focus {
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
-        }
-
-        .btn-bid {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #000000;
-        }
-
-        .btn-trick {
-            background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
-            color: white;
-        }
-
-        .input-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-light);
-        }
-
-        .round-score {
-            font-size: 1.125rem;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 10px;
-            min-width: 70px;
-            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
             letter-spacing: -0.5px;
         }
 
-        .score-pos {
-            color: var(--success);
-            background: rgba(16, 185, 129, 0.12);
+        /* Status Indicator */
+        .status-indicator {
+            margin: 16px 16px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            flex-shrink: 0;
         }
 
-        .score-neg {
-            color: var(--danger);
-            background: rgba(239, 68, 68, 0.12);
+        .status-indicator.happy {
+            background: rgba(48, 209, 88, 0.15);
         }
 
-        .total-cell {
-            height: 70px;
+        .status-indicator.unhappy {
+            background: rgba(255, 69, 58, 0.15);
+        }
+
+        .status-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        /* Scoreboard */
+        .scoreboard {
+            margin: 16px 16px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .scoreboard-header {
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--separator);
+            font-size: 13px;
+            color: var(--label-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .scoreboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 16px;
+            border-bottom: 0.5px solid var(--separator);
+        }
+
+        .scoreboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .scoreboard-name {
+            font-size: 17px;
+            font-weight: 400;
+            letter-spacing: -0.4px;
+        }
+
+        .scoreboard-value {
+            font-size: 20px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.5px;
+        }
+
+        .scoreboard-value.positive {
+            color: var(--system-green);
+        }
+
+        .scoreboard-value.negative {
+            color: var(--system-red);
+        }
+
+        /* Winner Card */
+        .winner-card {
+            margin: 32px 16px 24px;
+            background: linear-gradient(135deg, var(--system-orange) 0%, #ffb84d 100%);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(255, 159, 10, 0.3);
+        }
+
+        .winner-label {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(0, 0, 0, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .winner-name {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .winner-score {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #000;
+        }
+
+        /* Order Controls */
+        .order-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .order-btn {
+            width: 32px;
+            height: 20px;
+            background: var(--fill-tertiary);
+            border: none;
+            border-radius: 6px;
+            color: var(--system-blue);
+            font-size: 12px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--primary);
-            border-top: 2px solid var(--border-light);
-            letter-spacing: -1px;
         }
 
+        .order-btn:active {
+            background: var(--fill-secondary);
+        }
+
+        .order-btn:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            color: var(--label-tertiary);
+            font-size: 17px;
+        }
+
+        /* Utilities */
         .hidden {
-            display: none;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .content {
-                padding: 16px;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            input[type="text"] {
-                max-width: 100%;
-            }
-
-            .input-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            button {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .players-column {
-                width: 140px;
-            }
-
-            .hand-column {
-                width: 240px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .players-column {
-                width: 120px;
-            }
-
-            .player-name-display {
-                font-size: 0.9rem;
-            }
-
-            .player-total-display {
-                font-size: 1.75rem;
-            }
+            display: none !important;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <div class="version-badge" id="version-badge">v2.4.1</div>
-        <h1>🧙‍♂️ Wizard Scorekeeper</h1>
-        <div class="header-subtitle">Official score. Please do not rip out any pages.</div>
+<!-- SCREEN 1: LAUNCH -->
+<div id="screen-launch" class="screen active">
+    <div class="large-title-section">
+        <div class="large-title">Wizard</div>
+        <div class="subtitle">Card Game Scorekeeper</div>
     </div>
 
     <div class="content">
-        <div id="setup-section">
-            <div class="card">
-                <div class="card-header">
-                    <h3><span class="card-icon">⭐</span> Saved Players</h3>
-                </div>
-                
-                <div class="quick-add-grid" id="quick-add-buttons">
-                    <div class="empty-state">No saved players yet</div>
-                </div>
-                
-                <div class="input-group" style="margin-top: 20px;">
-                    <input type="text" id="save-player-name" placeholder="Enter player name to save">
-                    <button class="btn-success" onclick="savePlayer()">
-                        💾 Save Player
-                    </button>
-                </div>
-                
-                <div id="saved-players-list" style="margin-top: 16px;"></div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h3><span class="card-icon">🎮</span> Current Game</h3>
-                </div>
-                
-                <div id="player-list">No players added yet</div>
-                
-                <div class="input-group" style="margin-top: 20px;">
-                    <input type="text" id="new-player-name" placeholder="Enter new player name">
-                    <button class="btn-primary" onclick="addPlayer()">
-                        ➕ Add New Player
-                    </button>
-                </div>
-                
-                <div class="action-section">
-                    <button class="btn-success" onclick="startGame()" id="start-btn" style="display:none; font-size: 1.1rem;">
-                        🎯 Start Game
-                    </button>
-                </div>
+        <div class="list-group">
+            <div class="list-header">Players</div>
+            <div class="list" id="saved-players-list">
+                <div class="empty-state">No saved players yet</div>
             </div>
         </div>
 
-        <div id="game-section" class="hidden">
-            <div class="score-container">
-                <!-- Fixed Left Column - Player Names -->
-                <div class="players-column">
-                    <div class="players-header">
-                        <div>PLAYERS</div>
-                        <button class="btn-next-hand" onclick="nextDealer()">🎴 Next Hand</button>
-                    </div>
-                    <div id="player-names-column"></div>
-                </div>
-
-                <!-- Scrolling Score Columns -->
-                <div class="scores-wrapper">
-                    <div class="scores-container" id="scores-container">
-                        <!-- Hand columns will be inserted here -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="action-section" style="margin-top: 20px; padding: 0 20px 20px;">
-                <button class="btn-dealer" onclick="nextDealer()">
-                    🎴 Next Hand
-                </button>
-                <button class="btn-danger" onclick="location.reload()">
-                    🔄 New Game
-                </button>
+        <div class="input-group">
+            <div class="input-wrapper">
+                <input type="text" id="new-player-input" placeholder="Add player name">
             </div>
         </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-primary" id="start-game-btn" onclick="goToSeating()" style="display: none;">
+            Continue
+        </button>
+    </div>
+</div>
+
+<!-- SCREEN 2: SEATING -->
+<div id="screen-seating" class="screen">
+    <div class="nav-bar">
+        <button class="nav-back" onclick="goToLaunch()">
+            <span>‹</span> Back
+        </button>
+        <div class="nav-title">Seating Order</div>
+        <div style="width: 44px;"></div>
+    </div>
+
+    <div class="large-title-section">
+        <div class="subtitle">Dealer sits first</div>
+    </div>
+
+    <div class="content">
+        <div class="list-group">
+            <div class="list" id="seating-list"></div>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-primary btn-orange" onclick="startBidsEntry()">
+            Start Game
+        </button>
+    </div>
+</div>
+
+<!-- SCREEN 3: BIDS -->
+<div id="screen-bids" class="screen">
+    <div class="nav-bar">
+        <button class="nav-back" onclick="goBack()">
+            <span>‹</span> Back
+        </button>
+        <div class="nav-title">Bids</div>
+        <div class="round-badge" id="round-number-bids">1</div>
+    </div>
+
+    <div class="content">
+        <div class="status-indicator" id="happy-indicator">
+            <div class="status-icon">🤔</div>
+        </div>
+
+        <div class="list-group">
+            <div class="list" id="bids-list"></div>
+        </div>
+
+        <div class="scoreboard">
+            <div class="scoreboard-header">Leaderboard</div>
+            <div id="scoreboard-bids"></div>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-primary" onclick="confirmBids()">
+            Continue
+        </button>
+    </div>
+</div>
+
+<!-- SCREEN 4: SCORE -->
+<div id="screen-score" class="screen">
+    <div class="nav-bar">
+        <button class="nav-back" onclick="goToBids()">
+            <span>‹</span> Back
+        </button>
+        <div class="nav-title">Score</div>
+        <div class="round-badge" id="round-number-score">1</div>
+    </div>
+
+    <div class="content">
+        <div class="list-group">
+            <div class="list" id="score-list"></div>
+        </div>
+
+        <div class="scoreboard">
+            <div class="scoreboard-header">Leaderboard</div>
+            <div id="scoreboard-score"></div>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-primary" onclick="nextRound()">
+            Next Round
+        </button>
+    </div>
+</div>
+
+<!-- SCREEN 5: FINAL -->
+<div id="screen-final" class="screen">
+    <div class="nav-bar">
+        <div style="width: 44px;"></div>
+        <div class="nav-title">Game Over</div>
+        <div style="width: 44px;"></div>
+    </div>
+
+    <div class="content">
+        <div class="winner-card" id="winner-display"></div>
+
+        <div class="list-group">
+            <div class="list-header">Final Scores</div>
+            <div class="list" id="final-scores-list"></div>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="btn-primary" onclick="newGame()">
+            New Game
+        </button>
     </div>
 </div>
 
 <script>
-    let players = [];
-    let savedPlayers = [];
-    const MAX_HANDS = 15;
-    const APP_VERSION = "v2.4.1";
-    let currentDealer = 0; // Index of current dealer
+// Game state
+let savedPlayers = [];
+let selectedPlayers = [];
+let gamePlayers = [];
+let currentRound = 1;
+let currentDealer = 0;
+let rounds = [];
 
-    window.onload = function() {
-        loadSavedPlayers();
-        renderSavedPlayers();
-        loadGameState();
-        document.getElementById('version-badge').textContent = APP_VERSION;
+// Initialize
+window.onload = function() {
+    loadSavedPlayers();
+    renderSavedPlayers();
+    loadGameState();
+    
+    // Add input listener
+    document.getElementById('new-player-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            addNewPlayer();
+        }
+    });
+};
+
+// LocalStorage
+function loadSavedPlayers() {
+    const saved = localStorage.getItem('wizardSavedPlayers');
+    if (saved) {
+        savedPlayers = JSON.parse(saved);
+    }
+}
+
+function saveSavedPlayers() {
+    localStorage.setItem('wizardSavedPlayers', JSON.stringify(savedPlayers));
+}
+
+function saveGameState() {
+    const state = {
+        gamePlayers,
+        currentRound,
+        currentDealer,
+        rounds,
+        timestamp: new Date().toISOString()
     };
+    localStorage.setItem('wizardGameState', JSON.stringify(state));
+}
 
-    function loadSavedPlayers() {
-        const saved = localStorage.getItem('wizardSavedPlayers');
-        if (saved) {
-            savedPlayers = JSON.parse(saved);
-        }
-    }
-
-    function saveSavedPlayers() {
-        localStorage.setItem('wizardSavedPlayers', JSON.stringify(savedPlayers));
-    }
-
-    function saveGameState() {
-        const gameState = {
-            players: players,
-            currentDealer: currentDealer,
-            timestamp: new Date().toISOString()
-        };
-        localStorage.setItem('wizardGameState', JSON.stringify(gameState));
-    }
-
-    function loadGameState() {
-        const saved = localStorage.getItem('wizardGameState');
-        if (saved) {
-            try {
-                const gameState = JSON.parse(saved);
-                // Check if game is less than 24 hours old
-                const savedTime = new Date(gameState.timestamp);
-                const now = new Date();
-                const hoursDiff = (now - savedTime) / (1000 * 60 * 60);
-                
-                if (hoursDiff < 24 && gameState.players && gameState.players.length > 0) {
-                    if (confirm('Found a saved game. Would you like to continue it?')) {
-                        players = gameState.players;
-                        currentDealer = gameState.currentDealer || 0;
-                        document.getElementById('setup-section').classList.add('hidden');
-                        document.getElementById('game-section').classList.remove('hidden');
-                        document.querySelector('.header').classList.add('hidden');
-                        renderTable();
-                        restoreGameData();
-                    }
-                }
-            } catch (e) {
-                console.error('Error loading game state:', e);
-            }
-        }
-    }
-
-    function clearGameState() {
-        localStorage.removeItem('wizardGameState');
-    }
-
-    function savePlayer() {
-        const input = document.getElementById('save-player-name');
-        const name = input.value.trim();
-        
-        if (name) {
-            if (!savedPlayers.includes(name)) {
-                savedPlayers.push(name);
-                saveSavedPlayers();
-                renderSavedPlayers();
-                input.value = '';
-            } else {
-                alert('This player is already saved!');
-            }
-        }
-    }
-
-    function removeSavedPlayer(name) {
-        if (confirm(`Remove ${name} from saved players?`)) {
-            savedPlayers = savedPlayers.filter(p => p !== name);
-            saveSavedPlayers();
-            renderSavedPlayers();
-        }
-    }
-
-    function renderSavedPlayers() {
-        const quickAddDiv = document.getElementById('quick-add-buttons');
-        const savedListDiv = document.getElementById('saved-players-list');
-        
-        if (savedPlayers.length === 0) {
-            quickAddDiv.innerHTML = '<div class="empty-state">No saved players yet</div>';
-            savedListDiv.innerHTML = '';
-            return;
-        }
-        
-        quickAddDiv.innerHTML = savedPlayers.map(name => 
-            `<button class="btn-quick" onclick="quickAddPlayer('${name}')">✨ ${name}</button>`
-        ).join('');
-        
-        savedListDiv.innerHTML = '<div style="margin-top: 12px;">' + 
-            savedPlayers.map(name => 
-                `<span class="saved-player-tag">${name}<button class="btn-remove-tag" onclick="removeSavedPlayer('${name}')">✕</button></span>`
-            ).join('') + '</div>';
-    }
-
-    function quickAddPlayer(name) {
-        if (players.some(p => p.name === name)) {
-            alert(`${name} is already in this game!`);
-            return;
-        }
-        
-        players.push({ name: name, scores: new Array(MAX_HANDS).fill(0), total: 0 });
-        updatePlayerList();
-        document.getElementById('start-btn').style.display = 'inline-block';
-    }
-
-    function addPlayer() {
-        const input = document.getElementById('new-player-name');
-        const name = input.value.trim();
-        
-        if (name) {
-            if (players.some(p => p.name === name)) {
-                alert(`${name} is already in this game!`);
-                return;
-            }
+function loadGameState() {
+    const saved = localStorage.getItem('wizardGameState');
+    if (saved) {
+        try {
+            const state = JSON.parse(saved);
+            const savedTime = new Date(state.timestamp);
+            const now = new Date();
+            const hoursDiff = (now - savedTime) / (1000 * 60 * 60);
             
-            players.push({ name: name, scores: new Array(MAX_HANDS).fill(0), total: 0 });
-            input.value = '';
-            updatePlayerList();
-            document.getElementById('start-btn').style.display = 'inline-block';
-            input.focus();
-        }
-    }
-
-    function updatePlayerList() {
-        const list = document.getElementById('player-list');
-        if (players.length === 0) {
-            list.textContent = "No players added yet";
-        } else {
-            list.innerHTML = `<strong>Players:</strong> ${players.map(p => p.name).join(', ')}`;
-        }
-    }
-
-    function startGame() {
-        if (players.length === 0) return alert("Add at least one player!");
-
-        currentDealer = 0; // First player is dealer
-        document.getElementById('setup-section').classList.add('hidden');
-        document.getElementById('game-section').classList.remove('hidden');
-        document.querySelector('.header').classList.add('hidden');
-
-        renderTable();
-        saveGameState();
-    }
-
-    function renderTable() {
-        const playerNamesColumn = document.getElementById('player-names-column');
-        const scoresContainer = document.getElementById('scores-container');
-
-        // Render player names in fixed left column with scores
-        playerNamesColumn.innerHTML = players.map((player, idx) => {
-            return `<div class="player-row">
-                <div class="player-name-display ${idx === currentDealer ? 'is-dealer' : ''}" id="player-name-${idx}">
-                    <div>${player.name}</div>
-                </div>
-                <div class="player-total-display" id="player-total-sidebar-${idx}">0</div>
-            </div>`;
-        }).join('');
-
-        // Create columns for each hand (1-15)
-        for (let hand = 1; hand <= MAX_HANDS; hand++) {
-            const handColumn = document.createElement('div');
-            handColumn.className = 'hand-column';
-            
-            // Hand header
-            const handHeader = document.createElement('div');
-            handHeader.className = 'hand-header';
-            handHeader.innerHTML = `<div>#${hand}</div><div class="happy-indicator" id="happy-${hand}" style="display:none;">😊</div><div class="error-indicator" id="error-${hand}" style="display:none;">⚠️</div>`;
-            handColumn.appendChild(handHeader);
-
-            // Score cells for each player
-            players.forEach((player, pIndex) => {
-                const scoreCell = document.createElement('div');
-                scoreCell.className = 'score-cell';
-
-                const scoreInputs = document.createElement('div');
-                scoreInputs.className = 'score-inputs';
-
-                // Create HTML string with emojis instead of labels
-                scoreInputs.innerHTML = `
-                    <div class="input-with-buttons">
-                        <div class="number-control">
-                            <button class="increment-btn btn-bid bid-dec-${pIndex}-${hand-1}" type="button">−</button>
-                            <input type="number" class="bid-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="bid" min="0" max="${hand}" value="" placeholder="?" inputmode="none">
-                            <button class="increment-btn btn-bid bid-inc-${pIndex}-${hand-1}" type="button">+</button>
-                        </div>
-                    </div>
-                    <div class="input-with-buttons">
-                        <div class="number-control">
-                            <button class="increment-btn btn-trick trick-dec-${pIndex}-${hand-1}" type="button">−</button>
-                            <input type="number" class="trick-input" data-player="${pIndex}" data-hand="${hand-1}" data-type="tricks" min="0" max="${hand}" value="" placeholder="?" inputmode="none">
-                            <button class="increment-btn btn-trick trick-inc-${pIndex}-${hand-1}" type="button">+</button>
-                        </div>
-                    </div>
-                `;
-
-                // Add event listeners after elements are created
-                const bidInput = scoreInputs.querySelector(`input[data-type="bid"]`);
-                const trickInput = scoreInputs.querySelector(`input[data-type="tricks"]`);
-                const bidDecBtn = scoreInputs.querySelector(`.bid-dec-${pIndex}-${hand-1}`);
-                const bidIncBtn = scoreInputs.querySelector(`.bid-inc-${pIndex}-${hand-1}`);
-                const trickDecBtn = scoreInputs.querySelector(`.trick-dec-${pIndex}-${hand-1}`);
-                const trickIncBtn = scoreInputs.querySelector(`.trick-inc-${pIndex}-${hand-1}`);
-
-                bidDecBtn.onclick = (e) => {
-                    e.preventDefault();
-                    bidInput.dataset.touched = 'true';
-                    const val = parseInt(bidInput.value) || 0;
-                    if (val > 0) {
-                        bidInput.value = val - 1;
-                    } else if (bidInput.value === '') {
-                        bidInput.value = 0;
-                    }
-                    calculateAll();
-                    saveGameState();
-                };
-
-                bidIncBtn.onclick = (e) => {
-                    e.preventDefault();
-                    bidInput.dataset.touched = 'true';
-                    const val = parseInt(bidInput.value) || 0;
-                    if (val < hand) {
-                        bidInput.value = val + 1;
-                    }
-                    calculateAll();
-                    saveGameState();
-                };
-
-                trickDecBtn.onclick = (e) => {
-                    e.preventDefault();
-                    trickInput.dataset.touched = 'true';
-                    const val = parseInt(trickInput.value) || 0;
-                    if (val > 0) {
-                        trickInput.value = val - 1;
-                    } else if (trickInput.value === '') {
-                        trickInput.value = 0;
-                    }
-                    calculateAll();
-                    saveGameState();
-                };
-
-                trickIncBtn.onclick = (e) => {
-                    e.preventDefault();
-                    trickInput.dataset.touched = 'true';
-                    const val = parseInt(trickInput.value) || 0;
-                    if (val < hand) {
-                        trickInput.value = val + 1;
-                    }
-                    calculateAll();
-                    saveGameState();
-                };
-
-                bidInput.addEventListener('input', () => {
-                    calculateAll();
-                    saveGameState();
-                });
-
-                trickInput.addEventListener('input', () => {
-                    calculateAll();
-                    saveGameState();
-                });
-
-                const scoreDisplay = document.createElement('div');
-                scoreDisplay.id = `score-${pIndex}-${hand-1}`;
-                scoreDisplay.className = 'round-score';
-                scoreDisplay.textContent = '-';
-
-                scoreCell.appendChild(scoreInputs);
-                scoreCell.appendChild(scoreDisplay);
-                handColumn.appendChild(scoreCell);
-            });
-
-            // Total cell for this hand
-            const totalCell = document.createElement('div');
-            totalCell.className = 'total-cell';
-            totalCell.id = `total-col-${hand}`;
-            totalCell.textContent = '';
-            handColumn.appendChild(totalCell);
-
-            scoresContainer.appendChild(handColumn);
-        }
-
-        // Add final totals column
-        const totalsColumn = document.createElement('div');
-        totalsColumn.className = 'hand-column';
-        totalsColumn.style.background = 'linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%)';
-
-        const totalsHeader = document.createElement('div');
-        totalsHeader.className = 'hand-header';
-        totalsHeader.style.background = 'rgba(0,0,0,0.15)';
-        totalsHeader.style.color = 'white';
-        totalsHeader.textContent = 'FINAL';
-        totalsColumn.appendChild(totalsHeader);
-
-        players.forEach((player, pIndex) => {
-            const totalCell = document.createElement('div');
-            totalCell.className = 'score-cell';
-            totalCell.style.background = 'rgba(255,255,255,0.05)';
-            const totalDisplay = document.createElement('div');
-            totalDisplay.id = `player-total-${pIndex}`;
-            totalDisplay.style.fontSize = '2rem';
-            totalDisplay.style.fontWeight = '800';
-            totalDisplay.style.color = 'white';
-            totalDisplay.textContent = '0';
-            totalCell.appendChild(totalDisplay);
-            totalsColumn.appendChild(totalCell);
-        });
-
-        const finalCell = document.createElement('div');
-        finalCell.className = 'total-cell';
-        finalCell.style.background = 'rgba(0,0,0,0.15)';
-        finalCell.style.color = 'white';
-        totalsColumn.appendChild(finalCell);
-
-        scoresContainer.appendChild(totalsColumn);
-    }
-
-    function checkHappy(handNumber) {
-        let totalBids = 0;
-        let totalTricks = 0;
-        let allBidsEntered = true;
-        let allTricksEntered = true;
-
-        for (let pIndex = 0; pIndex < players.length; pIndex++) {
-            const bidInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handNumber-1}"][data-type="bid"]`);
-            const trickInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handNumber-1}"][data-type="tricks"]`);
-            
-            // Check if bid has been explicitly entered (has a value OR was set via buttons)
-            if (bidInput && (bidInput.value !== '' || bidInput.dataset.touched === 'true')) {
-                totalBids += parseInt(bidInput.value) || 0;
-            } else {
-                allBidsEntered = false;
-            }
-
-            // Check if tricks has been explicitly entered
-            if (trickInput && (trickInput.value !== '' || trickInput.dataset.touched === 'true')) {
-                totalTricks += parseInt(trickInput.value) || 0;
-            } else {
-                allTricksEntered = false;
-            }
-        }
-
-        const happyIndicator = document.getElementById(`happy-${handNumber}`);
-        const errorIndicator = document.getElementById(`error-${handNumber}`);
-        const handHeader = errorIndicator ? errorIndicator.closest('.hand-header') : null;
-        
-        // Check for error: total tricks won exceeds hand number
-        if (errorIndicator) {
-            if (allTricksEntered && totalTricks > handNumber) {
-                errorIndicator.style.display = 'block';
-                if (handHeader) handHeader.classList.add('has-error');
-            } else {
-                errorIndicator.style.display = 'none';
-                if (handHeader) handHeader.classList.remove('has-error');
-            }
-        }
-
-        // Check for happy: total bids equals hand number
-        if (happyIndicator) {
-            if (allBidsEntered && totalBids === handNumber) {
-                happyIndicator.style.display = 'block';
-            } else {
-                happyIndicator.style.display = 'none';
-            }
-        }
-    }
-
-    function calculateAll() {
-        players.forEach((player, pIndex) => {
-            let runningTotal = 0;
-            const bids = [];
-            const tricks = [];
-
-            for (let handIdx = 0; handIdx < MAX_HANDS; handIdx++) {
-                const bidInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="bid"]`);
-                const trickInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="tricks"]`);
-                const scoreDisplay = document.getElementById(`score-${pIndex}-${handIdx}`);
-
-                const bid = bidInput ? bidInput.value : '';
-                const tricks_val = trickInput ? trickInput.value : '';
-
-                // Store bid and trick values for saving
-                bids.push(bid !== '' ? parseInt(bid) : undefined);
-                tricks.push(tricks_val !== '' ? parseInt(tricks_val) : undefined);
-
-                // Only calculate if BOTH fields have actual values (not empty)
-                if (bid !== '' && tricks_val !== '') {
-                    const bidNum = parseInt(bid);
-                    const trickNum = parseInt(tricks_val);
-                    let handScore = 0;
-
-                    if (bidNum === trickNum) {
-                        handScore = 20 + (10 * trickNum);
-                    } else {
-                        const diff = Math.abs(bidNum - trickNum);
-                        handScore = -(10 * diff);
-                    }
-
-                    if (scoreDisplay) {
-                        scoreDisplay.textContent = handScore > 0 ? `+${handScore}` : handScore;
-                        scoreDisplay.className = 'round-score ' + (handScore >= 0 ? 'score-pos' : 'score-neg');
-                    }
+            if (hoursDiff < 24 && state.gamePlayers && state.gamePlayers.length > 0) {
+                if (confirm('Continue saved game?')) {
+                    gamePlayers = state.gamePlayers;
+                    currentRound = state.currentRound;
+                    currentDealer = state.currentDealer;
+                    rounds = state.rounds || [];
                     
-                    runningTotal += handScore;
-                } else {
-                    if (scoreDisplay) {
-                        scoreDisplay.textContent = '-';
-                        scoreDisplay.className = 'round-score';
+                    if (currentRound <= 15) {
+                        goToScreen('screen-bids');
+                        renderBidsScreen();
+                    } else {
+                        showFinal();
                     }
                 }
             }
-
-            // Save bids and tricks for game state
-            player.bids = bids;
-            player.tricks = tricks;
-
-            const totalDisplay = document.getElementById(`player-total-${pIndex}`);
-            if (totalDisplay) {
-                totalDisplay.textContent = runningTotal;
-            }
-            players[pIndex].total = runningTotal;
-        });
-
-        // Check and advance dealer based on completed hands
-        // advanceDealerIfNeeded(); // Removed - now manual via button
-
-        for (let hand = 1; hand <= MAX_HANDS; hand++) {
-            checkHappy(hand);
-        }
-
-        updatePlayerSidebar();
-        checkForGameEnd();
-    }
-
-    function nextDealer() {
-        currentDealer = (currentDealer + 1) % players.length;
-        console.log('Advanced dealer to player', currentDealer);
-        
-        // Force update all player displays
-        players.forEach((player, pIndex) => {
-            const nameDisplay = document.getElementById(`player-name-${pIndex}`);
-            if (nameDisplay) {
-                const isDealer = pIndex === currentDealer;
-                if (isDealer) {
-                    nameDisplay.classList.add('is-dealer');
-                } else {
-                    nameDisplay.classList.remove('is-dealer');
-                }
-            }
-        });
-        
-        updatePlayerSidebar();
-        saveGameState();
-    }
-
-    function restoreGameData() {
-        // Restore all input values from saved game state
-        players.forEach((player, pIndex) => {
-            for (let handIdx = 0; handIdx < MAX_HANDS; handIdx++) {
-                const bidInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="bid"]`);
-                const trickInput = document.querySelector(`input[data-player="${pIndex}"][data-hand="${handIdx}"][data-type="tricks"]`);
-                
-                // Restore values if they exist in saved data
-                if (player.bids && player.bids[handIdx] !== undefined) {
-                    if (bidInput) {
-                        bidInput.value = player.bids[handIdx];
-                        bidInput.dataset.touched = 'true';
-                    }
-                }
-                if (player.tricks && player.tricks[handIdx] !== undefined) {
-                    if (trickInput) {
-                        trickInput.value = player.tricks[handIdx];
-                        trickInput.dataset.touched = 'true';
-                    }
-                }
-            }
-        });
-        
-        calculateAll();
-    }
-
-    function checkForGameEnd() {
-        // Check if all players have completed all 15 hands
-        let gameComplete = true;
-        
-        for (let pIndex = 0; pIndex < players.length; pIndex++) {
-            const lastHandBid = document.querySelector(`input[data-player="${pIndex}"][data-hand="${MAX_HANDS-1}"][data-type="bid"]`);
-            const lastHandTrick = document.querySelector(`input[data-player="${pIndex}"][data-hand="${MAX_HANDS-1}"][data-type="tricks"]`);
-            
-            if (!lastHandBid || !lastHandTrick || lastHandBid.value === '' || lastHandTrick.value === '') {
-                gameComplete = false;
-                break;
-            }
-        }
-        
-        if (gameComplete) {
-            showWinnerCelebration();
+        } catch (e) {
+            console.error('Error loading game state:', e);
         }
     }
+}
 
-    function showWinnerCelebration() {
-        // Find the winner
-        const sortedPlayers = [...players].sort((a, b) => b.total - a.total);
-        const winner = sortedPlayers[0];
-        
-        // Create celebration overlay
-        const celebration = document.createElement('div');
-        celebration.className = 'winner-celebration';
-        celebration.innerHTML = `
-            <div class="winner-card">
-                <h2>🎉 GAME OVER! 🎉</h2>
-                <div class="winner-name">👑 ${winner.name} 👑</div>
-                <div>WINS WITH</div>
-                <div class="winner-score">${winner.total}</div>
-                <div style="margin-top: 20px;">
-                    <button class="btn-success" onclick="this.closest('.winner-celebration').remove(); location.reload();" style="font-size: 1.2rem; padding: 16px 32px;">
-                        🎯 New Game
-                    </button>
+function clearGameState() {
+    localStorage.removeItem('wizardGameState');
+}
+
+// Navigation
+function goToScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+}
+
+function goToLaunch() {
+    goToScreen('screen-launch');
+}
+
+function goToSeating() {
+    if (selectedPlayers.length === 0) {
+        alert('Select at least one player');
+        return;
+    }
+    gamePlayers = [...selectedPlayers];
+    renderSeatingScreen();
+    goToScreen('screen-seating');
+}
+
+function goToBids() {
+    renderBidsScreen();
+    goToScreen('screen-bids');
+}
+
+function goToScore() {
+    renderScoreScreen();
+    goToScreen('screen-score');
+}
+
+function goBack() {
+    if (currentRound > 1) {
+        currentRound--;
+        goToBids();
+    } else {
+        goToScreen('screen-seating');
+    }
+}
+
+// SCREEN 1: Launch
+function renderSavedPlayers() {
+    const container = document.getElementById('saved-players-list');
+    
+    if (savedPlayers.length === 0) {
+        container.innerHTML = '<div class="empty-state">No saved players yet</div>';
+        return;
+    }
+    
+    container.innerHTML = savedPlayers.map(name => {
+        const isSelected = selectedPlayers.includes(name);
+        return `
+            <div class="list-item ${isSelected ? 'selected' : ''}" onclick="togglePlayer('${name}')">
+                <div class="checkbox ${isSelected ? 'checked' : ''}"></div>
+                <div class="list-label">${name}</div>
+            </div>
+        `;
+    }).join('');
+    
+    updateStartButton();
+}
+
+function togglePlayer(name) {
+    const index = selectedPlayers.indexOf(name);
+    if (index > -1) {
+        selectedPlayers.splice(index, 1);
+    } else {
+        selectedPlayers.push(name);
+    }
+    renderSavedPlayers();
+}
+
+function addNewPlayer() {
+    const input = document.getElementById('new-player-input');
+    const name = input.value.trim();
+    
+    if (!name) return;
+    
+    if (savedPlayers.includes(name)) {
+        alert('Player already exists');
+        return;
+    }
+    
+    savedPlayers.push(name);
+    selectedPlayers.push(name);
+    saveSavedPlayers();
+    renderSavedPlayers();
+    input.value = '';
+}
+
+function updateStartButton() {
+    const btn = document.getElementById('start-game-btn');
+    btn.style.display = selectedPlayers.length > 0 ? 'block' : 'none';
+}
+
+// SCREEN 2: Seating
+function renderSeatingScreen() {
+    const container = document.getElementById('seating-list');
+    container.innerHTML = gamePlayers.map((name, index) => `
+        <div class="list-item ${index === 0 ? 'dealer' : ''}">
+            <div class="list-label ${index === 0 ? 'dealer' : ''}">
+                ${name}
+            </div>
+            <div class="order-controls">
+                <button class="order-btn" onclick="movePlayer(${index}, -1)" ${index === 0 ? 'disabled' : ''}>▲</button>
+                <button class="order-btn" onclick="movePlayer(${index}, 1)" ${index === gamePlayers.length - 1 ? 'disabled' : ''}>▼</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function movePlayer(index, direction) {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= gamePlayers.length) return;
+    
+    const temp = gamePlayers[index];
+    gamePlayers[index] = gamePlayers[newIndex];
+    gamePlayers[newIndex] = temp;
+    
+    renderSeatingScreen();
+}
+
+function startBidsEntry() {
+    currentRound = 1;
+    currentDealer = 0;
+    rounds = [];
+    renderBidsScreen();
+    goToScreen('screen-bids');
+    saveGameState();
+}
+
+// SCREEN 3: Bids
+function renderBidsScreen() {
+    document.getElementById('round-number-bids').textContent = currentRound;
+    
+    if (!rounds[currentRound - 1]) {
+        rounds[currentRound - 1] = {
+            bids: new Array(gamePlayers.length).fill(null),
+            tricks: new Array(gamePlayers.length).fill(null)
+        };
+    }
+    
+    const round = rounds[currentRound - 1];
+    const container = document.getElementById('bids-list');
+    
+    container.innerHTML = gamePlayers.map((name, index) => {
+        const isDealer = index === currentDealer;
+        const bid = round.bids[index];
+        return `
+            <div class="score-entry ${isDealer ? 'dealer' : ''}">
+                <div class="entry-info">
+                    <div class="entry-name ${isDealer ? 'dealer' : ''}">${name}</div>
+                    ${isDealer ? '<div class="entry-detail">Dealer</div>' : ''}
+                </div>
+                <div class="entry-controls">
+                    <button class="control-btn green" onclick="changeBid(${index}, -1)">−</button>
+                    <div class="control-value" id="bid-${index}">${bid !== null ? bid : '?'}</div>
+                    <button class="control-btn green" onclick="changeBid(${index}, 1)">+</button>
                 </div>
             </div>
         `;
+    }).join('');
+    
+    updateHappyIndicator();
+    renderScoreboard('scoreboard-bids', true);
+}
+
+function changeBid(playerIndex, delta) {
+    const round = rounds[currentRound - 1];
+    let currentBid = round.bids[playerIndex];
+    
+    if (currentBid === null) {
+        if (delta < 0) {
+            round.bids[playerIndex] = 0;
+            document.getElementById(`bid-${playerIndex}`).textContent = 0;
+            updateHappyIndicator();
+            saveGameState();
+            return;
+        } else {
+            currentBid = 0;
+        }
+    }
+    
+    const newBid = currentBid + delta;
+    
+    if (newBid < 0 || newBid > currentRound) return;
+    
+    round.bids[playerIndex] = newBid;
+    document.getElementById(`bid-${playerIndex}`).textContent = newBid;
+    
+    updateHappyIndicator();
+    saveGameState();
+}
+
+function updateHappyIndicator() {
+    const round = rounds[currentRound - 1];
+    const allBids = round.bids.every(b => b !== null);
+    const sum = round.bids.reduce((acc, b) => acc + (b || 0), 0);
+    
+    const indicator = document.getElementById('happy-indicator');
+    const icon = indicator.querySelector('.status-icon');
+    
+    if (!allBids) {
+        indicator.className = 'status-indicator';
+        icon.textContent = '🤔';
+    } else if (sum === currentRound) {
+        indicator.className = 'status-indicator happy';
+        icon.textContent = '😊';
+    } else {
+        indicator.className = 'status-indicator unhappy';
+        icon.textContent = '😐';
+    }
+}
+
+function confirmBids() {
+    const round = rounds[currentRound - 1];
+    const allBids = round.bids.every(b => b !== null);
+    
+    if (!allBids) {
+        alert('Enter bids for all players');
+        return;
+    }
+    
+    goToScore();
+}
+
+// SCREEN 4: Score
+function renderScoreScreen() {
+    document.getElementById('round-number-score').textContent = currentRound;
+    
+    const round = rounds[currentRound - 1];
+    const container = document.getElementById('score-list');
+    
+    container.innerHTML = gamePlayers.map((name, index) => {
+        const isDealer = index === currentDealer;
+        const bid = round.bids[index];
+        const tricks = round.tricks[index];
+        const points = calculateRoundPoints(bid, tricks);
         
-        document.body.appendChild(celebration);
+        return `
+            <div class="score-entry ${isDealer ? 'dealer' : ''}">
+                <div class="entry-info">
+                    <div class="entry-name ${isDealer ? 'dealer' : ''}">${name}</div>
+                    <div class="entry-detail">
+                        Bid: <span class="entry-bid">${bid}</span>
+                        ${tricks !== null ? `<span class="entry-points ${points >= 0 ? 'positive' : 'negative'}">${points >= 0 ? '+' : ''}${points}</span>` : ''}
+                    </div>
+                </div>
+                <div class="entry-controls">
+                    <button class="control-btn orange" onclick="changeTricks(${index}, -1)">−</button>
+                    <div class="control-value" id="tricks-${index}">${tricks !== null ? tricks : '?'}</div>
+                    <button class="control-btn orange" onclick="changeTricks(${index}, 1)">+</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    renderScoreboard('scoreboard-score', true);
+}
+
+function changeTricks(playerIndex, delta) {
+    const round = rounds[currentRound - 1];
+    let currentTricks = round.tricks[playerIndex];
+    
+    if (currentTricks === null) {
+        if (delta < 0) {
+            round.tricks[playerIndex] = 0;
+            renderScoreScreen();
+            saveGameState();
+            return;
+        } else {
+            currentTricks = 0;
+        }
+    }
+    
+    const newTricks = currentTricks + delta;
+    
+    if (newTricks < 0 || newTricks > currentRound) return;
+    
+    const totalTricks = round.tricks.reduce((sum, t, idx) => {
+        if (idx === playerIndex) return sum + newTricks;
+        return sum + (t || 0);
+    }, 0);
+    
+    if (totalTricks > currentRound) return;
+    
+    round.tricks[playerIndex] = newTricks;
+    
+    renderScoreScreen();
+    saveGameState();
+}
+
+function calculateRoundPoints(bid, tricks) {
+    if (tricks === null) return 0;
+    
+    if (bid === tricks) {
+        return 20 + (tricks * 10);
+    } else {
+        return -10 * Math.abs(bid - tricks);
+    }
+}
+
+function nextRound() {
+    const round = rounds[currentRound - 1];
+    const allTricks = round.tricks.every(t => t !== null);
+    
+    if (!allTricks) {
+        alert('Enter tricks for all players');
+        return;
+    }
+    
+    if (currentRound >= 15) {
+        showFinal();
+        return;
+    }
+    
+    currentRound++;
+    currentDealer = (currentDealer + 1) % gamePlayers.length;
+    
+    goToBids();
+    saveGameState();
+}
+
+// Scoreboard
+function renderScoreboard(containerId, sortByScore) {
+    const container = document.getElementById(containerId);
+    
+    const scores = gamePlayers.map((name, index) => {
+        let total = 0;
         
-        // Add confetti
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.background = ['#fbbf24', '#f59e0b', '#10b981', '#6366f1', '#ef4444'][Math.floor(Math.random() * 5)];
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                celebration.appendChild(confetti);
-            }, i * 30);
+        for (let r = 0; r < rounds.length; r++) {
+            const round = rounds[r];
+            if (round && round.tricks && round.tricks[index] !== null) {
+                total += calculateRoundPoints(round.bids[index], round.tricks[index]);
+            }
         }
         
-        clearGameState();
-    }
-
-    function updatePlayerSidebar() {
-        const sortedPlayers = players.map((p, idx) => ({
-            name: p.name,
-            total: p.total,
-            index: idx
-        })).sort((a, b) => b.total - a.total);
-        
-        const highestScore = sortedPlayers.length > 0 ? sortedPlayers[0].total : 0;
-        const lowestScore = sortedPlayers.length > 0 ? sortedPlayers[sortedPlayers.length - 1].total : 0;
-
-        players.forEach((player, pIndex) => {
-            const nameDisplay = document.getElementById(`player-name-${pIndex}`);
-            const totalDisplay = document.getElementById(`player-total-sidebar-${pIndex}`);
-            
-            if (nameDisplay && totalDisplay) {
-                const isLeader = player.total === highestScore && player.total > 0 && players.length > 1;
-                const isLastPlace = players.length > 1 && player.total === lowestScore && player.total < highestScore;
-                
-                let emoji = '';
-                if (isLeader) {
-                    emoji = '👑 ';
-                } else if (isLastPlace) {
-                    emoji = '💩 ';
-                }
-                
-                nameDisplay.textContent = emoji + player.name;
-                totalDisplay.textContent = player.total;
-                
-                if (player.total > 0) {
-                    totalDisplay.className = 'player-total-display positive';
-                } else if (player.total < 0) {
-                    totalDisplay.className = 'player-total-display negative';
-                } else {
-                    totalDisplay.className = 'player-total-display';
-                }
+        return { name, total, index };
+    });
+    
+    if (sortByScore) {
+        scores.sort((a, b) => {
+            if (b.total !== a.total) {
+                return b.total - a.total;
             }
+            return a.index - b.index;
         });
     }
+    
+    container.innerHTML = scores.map(s => `
+        <div class="scoreboard-item">
+            <div class="scoreboard-name">${s.name}</div>
+            <div class="scoreboard-value ${s.total > 0 ? 'positive' : s.total < 0 ? 'negative' : ''}">${s.total}</div>
+        </div>
+    `).join('');
+}
+
+// SCREEN 5: Final
+function showFinal() {
+    const scores = gamePlayers.map((name, index) => {
+        let total = 0;
+        for (let r = 0; r < rounds.length; r++) {
+            const round = rounds[r];
+            if (round.tricks[index] !== null) {
+                total += calculateRoundPoints(round.bids[index], round.tricks[index]);
+            }
+        }
+        return { name, total };
+    });
+    
+    scores.sort((a, b) => b.total - a.total);
+    
+    const winner = scores[0];
+    
+    document.getElementById('winner-display').innerHTML = `
+        <div class="winner-label">Winner</div>
+        <div class="winner-name">${winner.name}</div>
+        <div class="winner-score">${winner.total}</div>
+    `;
+    
+    const finalList = document.getElementById('final-scores-list');
+    finalList.innerHTML = scores.map((s, index) => `
+        <div class="list-item">
+            <div class="list-label">${index + 1}. ${s.name}</div>
+            <div class="scoreboard-value ${s.total > 0 ? 'positive' : s.total < 0 ? 'negative' : ''}">${s.total}</div>
+        </div>
+    `).join('');
+    
+    goToScreen('screen-final');
+    clearGameState();
+}
+
+function newGame() {
+    if (confirm('Start a new game?')) {
+        selectedPlayers = [];
+        gamePlayers = [];
+        currentRound = 1;
+        currentDealer = 0;
+        rounds = [];
+        clearGameState();
+        goToLaunch();
+        renderSavedPlayers();
+    }
+}
 </script>
 
 </body>
