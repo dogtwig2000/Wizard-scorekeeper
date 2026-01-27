@@ -48,6 +48,7 @@
         .screen {
             display: none;
             height: 100vh;
+            height: 100dvh; /* Use dynamic viewport height for better mobile support */
             padding-top: env(safe-area-inset-top);
             position: absolute;
             top: 0;
@@ -55,8 +56,7 @@
             right: 0;
             bottom: 0;
             background: var(--bg-primary);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            overflow: hidden;
         }
 
         .screen.active {
@@ -153,6 +153,7 @@
             flex: 1;
             padding: 0 0 20px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             min-height: 0;
         }
 
@@ -247,10 +248,30 @@
             font-weight: 400;
         }
 
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--system-red);
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.15s;
+        }
+
+        .delete-btn:active {
+            background: var(--fill-tertiary);
+        }
+
         /* Buttons */
         .button-group {
-            padding: 0 16px 80px;
+            padding: 0 16px 40px;
             flex-shrink: 0;
+            background: var(--bg-primary);
         }
 
         .btn-primary {
@@ -865,10 +886,12 @@ function renderSavedPlayers() {
     
     container.innerHTML = savedPlayers.map(name => {
         const isSelected = selectedPlayers.includes(name);
+        const escapedName = name.replace(/'/g, "\\'");
         return `
-            <div class="list-item ${isSelected ? 'selected' : ''}" onclick="togglePlayer('${name}')">
-                <div class="checkbox ${isSelected ? 'checked' : ''}"></div>
-                <div class="list-label">${name}</div>
+            <div class="list-item ${isSelected ? 'selected' : ''}">
+                <div class="checkbox ${isSelected ? 'checked' : ''}" onclick="togglePlayer('${escapedName}')"></div>
+                <div class="list-label" onclick="togglePlayer('${escapedName}')" style="flex: 1; cursor: pointer;">${name}</div>
+                <button class="delete-btn" onclick="event.stopPropagation(); deletePlayer('${escapedName}')">×</button>
             </div>
         `;
     }).join('');
@@ -884,6 +907,15 @@ function togglePlayer(name) {
         selectedPlayers.push(name);
     }
     renderSavedPlayers();
+}
+
+function deletePlayer(name) {
+    if (confirm(`Delete ${name} from saved players?`)) {
+        savedPlayers = savedPlayers.filter(p => p !== name);
+        selectedPlayers = selectedPlayers.filter(p => p !== name);
+        saveSavedPlayers();
+        renderSavedPlayers();
+    }
 }
 
 function addNewPlayer() {
