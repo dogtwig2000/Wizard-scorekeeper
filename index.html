@@ -43,14 +43,12 @@
             -webkit-font-smoothing: antialiased;
             position: fixed;
             width: 100%;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         .screen {
             display: none;
             height: 100vh;
             padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
             position: absolute;
             top: 0;
             left: 0;
@@ -251,7 +249,8 @@
 
         /* Buttons */
         .button-group {
-            padding: 0 16px 8px;
+            padding: 0 16px 16px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
             flex-shrink: 0;
         }
 
